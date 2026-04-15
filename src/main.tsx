@@ -4,6 +4,13 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home";
+import AuthLayout from "./layouts/AuthLayout";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import AuthContextProvider from "./contexts/authContext";
+import UserLayout from "./layouts/UserLayout";
+import HostLayout from "./layouts/HostLayout";
+import CreateListing from "./pages/CreateListing";
 
 const router = createBrowserRouter([
   {
@@ -14,12 +21,42 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
+      {
+        element: <AuthLayout />,
+        children: [
+          {
+            path: "login",
+            element: <Login />,
+          },
+        ],
+      },
+      {
+        element: <UserLayout />,
+        children: [
+          {
+            path: "profile",
+            element: <Profile />,
+          },
+          {
+            path: "host",
+            element: <HostLayout />,
+            children: [
+              {
+                path: "createListing",
+                element: <CreateListing />,
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthContextProvider>
+      <RouterProvider router={router} />
+    </AuthContextProvider>
   </StrictMode>,
 );
