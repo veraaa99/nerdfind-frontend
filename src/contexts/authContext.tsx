@@ -7,12 +7,34 @@ import {
   type PropsWithChildren,
 } from "react";
 
-export const AuthContext = createContext();
+type AuthState = {
+  user: User | null;
+  token: string | null;
+  isAuthChecked: boolean;
+  actions: {
+    registerUser: () => void;
+    loginUser: () => void;
+    logoutUser: () => void;
+  };
+};
+
+const defaultState: AuthState = {
+  user: null,
+  token: null,
+  isAuthChecked: false,
+  actions: {
+    registerUser: () => {},
+    loginUser: () => {},
+    logoutUser: () => {},
+  },
+};
+
+export const AuthContext = createContext<AuthState>(defaultState);
 
 const AuthContextProvider = ({ children }: PropsWithChildren) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState<String | null>(null);
-  const [isAuthChecked, setIsAuthChecked] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [isAuthChecked, setIsAuthChecked] = useState<boolean>(false);
 
   useEffect(() => {
     const checkToken = async () => {
@@ -30,7 +52,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
           setToken(sessionStorage.getItem("jwt"));
           setUser(res.data);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.log(error.message);
         sessionStorage.removeItem("jwt");
       } finally {
@@ -40,9 +62,24 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     checkToken();
   }, []);
 
-  const value = { user, isAuthChecked };
+  const registerUser: typeof defaultState.actions.registerUser = async () => {};
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  const loginUser: typeof defaultState.actions.loginUser = async () => {};
+
+  const logoutUser: typeof defaultState.actions.logoutUser = () => {
+    sessionStorage.removeItem("jwt");
+    setToken(null);
+    setUser(null);
+    return;
+  };
+
+  const actions = { registerUser, loginUser, logoutUser };
+
+  return (
+    <AuthContext.Provider value={{ user, token, isAuthChecked, actions }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthContextProvider;

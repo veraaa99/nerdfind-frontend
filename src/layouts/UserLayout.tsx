@@ -6,10 +6,17 @@ const UserLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  return user ? (
-    <Outlet />
-  ) : (
-    navigate("/login", { replace: true, state: { from: location.pathname } })
+  return (
+    <>
+      {user ? (
+        <Outlet />
+      ) : (
+        navigate("/login", {
+          replace: true,
+          state: { from: location.pathname },
+        })
+      )}
+    </>
   );
 };
 
