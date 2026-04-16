@@ -39,7 +39,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     const checkToken = async () => {
       try {
-        const userToken = sessionStorage.getItem("jwt");
+        const userToken: string | null = sessionStorage.getItem("jwt");
         if (!userToken) return;
 
         const res = await axios.get("/auth/check", {

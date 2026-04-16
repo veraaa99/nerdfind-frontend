@@ -1,10 +1,16 @@
-import { Outlet, useLocation, useNavigate } from "react-router";
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  type Location,
+  type NavigateFunction,
+} from "react-router";
 import { useAuth } from "../contexts/authContext";
 
 const UserLayout = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate: NavigateFunction = useNavigate();
+  const location: Location<any> = useLocation();
 
   return (
     <>
