@@ -11,7 +11,7 @@ const RootLayout = () => {
   }
 
   return (
-    <div className="min-h-svh bg-blue-950">
+    <div className="min-h-svh bg-emerald-950 text-emerald-500">
       <Navbar />
       <main>
         <Outlet />
