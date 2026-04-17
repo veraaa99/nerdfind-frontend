@@ -1,5 +1,7 @@
 import { Outlet } from "react-router";
 import { useAuth } from "../contexts/authContext";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const RootLayout = () => {
   const { isAuthChecked } = useAuth();
@@ -10,11 +12,11 @@ const RootLayout = () => {
 
   return (
     <div className="min-h-svh bg-blue-950">
-      {/* NAVBAR */}
+      <Navbar />
       <main>
         <Outlet />
       </main>
-      {/* FOOTER */}
+      <Footer />
     </div>
   );
 };

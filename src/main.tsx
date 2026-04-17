@@ -11,6 +11,9 @@ import AuthContextProvider from "./contexts/authContext";
 import UserLayout from "./layouts/UserLayout";
 import HostLayout from "./layouts/HostLayout";
 import CreateListing from "./pages/CreateListing";
+import AllListings from "./pages/AllListings";
+import ListingDetails from "./pages/ListingDetails";
+import SearchResult from "./pages/SearchResult";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +23,18 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "listings",
+        element: <AllListings />,
+      },
+      {
+        path: "listings/:id",
+        element: <ListingDetails />,
+      },
+      {
+        path: "search",
+        element: <SearchResult />,
       },
       {
         element: <AuthLayout />,
