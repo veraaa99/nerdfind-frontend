@@ -14,7 +14,7 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
         <div className="p-5">
           <h3>{listing.title}</h3>
           <h4>{listing.type}</h4>
-          <p>{listing.description}</p>
+          <p>{listing.location.city}</p>
           <div>
             {listing.category.predefinedCategory &&
               listing.category.predefinedCategory.map((category) => (

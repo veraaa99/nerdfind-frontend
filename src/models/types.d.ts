@@ -44,7 +44,7 @@ type Listing = {
   images: [ImageUpload];
   date: Date;
   openingHours: [OpeningHours];
-  location: { type: "Point"; coordinates: [number, number] };
+  location: { city: string; type: "Point"; coordinates: [number, number] };
 
   website?: string;
   host: User;
