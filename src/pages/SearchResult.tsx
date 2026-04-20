@@ -29,6 +29,38 @@ const SearchResult = () => {
           }
         }
 
+        if (searchParams.has("category")) {
+          if (listing.category.predefinedCategory) {
+            if (
+              searchParams
+                .getAll("category")
+                .filter((category) =>
+                  listing.category.predefinedCategory?.includes(
+                    category as category,
+                  ),
+                ).length > 0
+            ) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+
+          if (listing.category.customCategory) {
+            if (
+              searchParams
+                .getAll("category")
+                .filter((category) =>
+                  listing.category.customCategory?.includes(category),
+                ).length > 0
+            ) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        }
+
         if (searchParams.has("searchString")) {
           const searchString = searchParams.get("searchString")!.toLowerCase();
 
@@ -40,6 +72,22 @@ const SearchResult = () => {
             return true;
           } else if (listing.type.toLowerCase().includes(searchString)) {
             return true;
+          } else if (listing.description.toLowerCase().includes(searchString)) {
+            return true;
+          } else if (
+            listing.category.predefinedCategory &&
+            listing.category.predefinedCategory?.filter((category) =>
+              category.toLowerCase().includes(searchString),
+            ).length > 0
+          ) {
+            return true;
+          } else if (
+            listing.category.customCategory &&
+            listing.category.customCategory?.filter((category) =>
+              category.toLowerCase().includes(searchString),
+            ).length > 0
+          ) {
+            return true;
           } else {
             return false;
           }
@@ -50,20 +98,6 @@ const SearchResult = () => {
 
       setSearchResult(filtered);
     };
-
-    // if (searchParams.has("searchString")) {
-    //   if (
-    //     !listing.title.includes(searchParams.get("searchString") as string)
-    //   ) {
-    //     return;
-    //   }
-    // }
-
-    // if (searchParams.has("type")) {
-    //   if (listing.type !== searchParams.get("type")?.toString()) {
-    //     return;
-    //   }
-    // }
 
     getListingsByFilter();
   }, [searchParams]);
