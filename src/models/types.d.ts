@@ -8,6 +8,17 @@ type category =
   | "Manga"
   | "Rollspel";
 
+type weekDay =
+  | "Måndag"
+  | "Tisdag"
+  | "Onsdag"
+  | "Torsdag"
+  | "Fredag"
+  | "Lördag"
+  | "Söndag"
+  | "Måndag - Fredag"
+  | "Lördag - Söndag";
+
 type User = {
   _id: string;
   name: string;
@@ -23,13 +34,11 @@ type ImageUpload = {
 };
 
 type OpeningHours = {
-  day: number;
-  times: [
-    {
-      start: string;
-      end: string;
-    },
-  ];
+  day: weekDay;
+  times: {
+    start: string | "STÄNGT";
+    end?: string;
+  };
 };
 
 type Listing = {
@@ -38,12 +47,12 @@ type Listing = {
   description: string;
   type: listingType;
   category: {
-    predefinedCategory?: [category];
-    customCategory?: [string];
+    predefinedCategory?: category[];
+    customCategory?: string[];
   };
-  images: [ImageUpload];
-  date: Date;
-  openingHours: [OpeningHours];
+  images: ImageUpload[];
+  date?: Date;
+  openingHours: OpeningHours[];
   location: { city: string; type: "Point"; coordinates: [number, number] };
 
   website?: string;
