@@ -22,7 +22,7 @@ export const dummyListings: Listing[] = [
     location: {
       city: "Stockholm",
       type: "Point",
-      coordinates: [59.325415365, 18.0695163886],
+      coordinates: [59.330833, 18.070994],
     },
     website:
       "https://images.unsplash.com/photo-1589208733220-40ef1ca2bdb7?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -49,7 +49,7 @@ export const dummyListings: Listing[] = [
     location: {
       city: "Stockholm",
       type: "Point",
-      coordinates: [59.325415365, 18.0695163886],
+      coordinates: [59.330833, 18.070994],
     },
     website:
       "https://images.unsplash.com/photo-1589208733220-40ef1ca2bdb7?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -75,7 +75,7 @@ export const dummyListings: Listing[] = [
     location: {
       city: "Uppsala",
       type: "Point",
-      coordinates: [59.325415365, 18.0695163886],
+      coordinates: [59.330833, 18.070994],
     },
     website:
       "https://images.unsplash.com/photo-1589208733220-40ef1ca2bdb7?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",

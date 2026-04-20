@@ -1,8 +1,14 @@
+import "leaflet/dist/leaflet.css";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+
 type ListingProps = {
   listing: Listing;
 };
 
 const Listing = ({ listing }: ListingProps) => {
+  const [long, lat] = listing.location.coordinates;
+  const position: [number, number] = [long, lat];
+
   return (
     <div>
       <h1>{listing.title}</h1>
@@ -73,7 +79,13 @@ const Listing = ({ listing }: ListingProps) => {
       )}
 
       <h3>PLATS</h3>
-      <p></p>
+
+      <MapContainer center={position} zoom={13} style={{ height: "300px" }}>
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <Marker position={position}>
+          <Popup>{listing.location.city}</Popup>
+        </Marker>
+      </MapContainer>
 
       <h3>ARRANGÖR: {listing.host.name}</h3>
       {listing.website && (
