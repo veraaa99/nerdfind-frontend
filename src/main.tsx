@@ -57,7 +57,7 @@ const router = createBrowserRouter([
             element: <HostLayout />,
             children: [
               {
-                path: "createListing",
+                path: "createlisting",
                 element: <CreateListing />,
               },
             ],
