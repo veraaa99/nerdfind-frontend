@@ -74,5 +74,4 @@ type CreateListingInputs = {
   location: { city: string; type: "Point"; coordinates: [number, number] };
 
   website?: string;
-  host: User;
 };
