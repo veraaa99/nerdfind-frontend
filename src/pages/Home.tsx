@@ -1,4 +1,4 @@
-import ListingCardSmall from "../components/ListingCard.Small";
+import ListingCardSmall from "../components/ListingCardSmall";
 import Searchbar from "../components/Searchbar";
 import { dummyListings } from "../data/listings";
 

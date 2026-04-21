@@ -25,6 +25,7 @@ type User = {
   email: string;
   password: string;
   isHost: boolean;
+  savedListings?: string[];
 };
 
 type ImageUpload = {

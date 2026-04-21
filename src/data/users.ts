@@ -5,6 +5,7 @@ export const dummyUsers: User[] = [
     email: "test@mail.com",
     password: "Testar123",
     isHost: true,
+    savedListings: ["1"],
   },
   {
     _id: "2",

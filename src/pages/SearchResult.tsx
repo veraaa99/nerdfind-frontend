@@ -1,4 +1,4 @@
-import ListingCardSmall from "@/components/ListingCard.Small";
+import ListingCardSmall from "@/components/ListingCardSmall";
 import { dummyListings } from "@/data/listings";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
