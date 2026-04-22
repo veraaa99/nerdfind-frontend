@@ -5,6 +5,7 @@ import { Checkbox } from "./ui/checkbox";
 import { Field, FieldContent, FieldLabel, FieldTitle } from "./ui/field";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Input } from "./ui/input";
+import { Calendar } from "./ui/calendar";
 
 const categories: string[] = [
   "Tv-spel",
@@ -197,7 +198,7 @@ const CreateListingForm = () => {
                                 (item) => item !== label,
                               ),
                         ),
-                          onChange(checked));
+                          onChange(selectedCategories));
                       }}
                       className="hidden"
                     />
@@ -214,34 +215,56 @@ const CreateListingForm = () => {
           />
 
           <h4>(VALFRITT) EGEN KATEGORI: </h4>
+          <Controller
+            name="type"
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange } }) => (
+              <>
+                {customCategories.map((category) => (
+                  <Badge key={category}>
+                    {category}
+                    <button onClick={() => onChange(removeCategory(category))}>
+                      X
+                    </button>
+                  </Badge>
+                ))}
+                <Input
+                  value={categoryInput}
+                  onChange={(e) => setCategoryInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      onChange(addCategory(categoryInput));
+                    }
 
-          {/* TODO: LÄGG TILL CONTROLLER PÅ CUSTOM CATEGORY */}
-
-          {customCategories.map((category) => (
-            <Badge key={category}>
-              {category}
-              <button onClick={() => removeCategory(category)}>X</button>
-            </Badge>
-          ))}
-          <Input
-            value={categoryInput}
-            onChange={(e) => setCategoryInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                addCategory(categoryInput);
-              }
-
-              if (e.key === "Backspace" && !categoryInput) {
-                setCustomCategories(customCategories.slice(0, -1));
-              }
-            }}
+                    if (e.key === "Backspace" && !categoryInput) {
+                      setCustomCategories(customCategories.slice(0, -1));
+                      onChange(customCategories);
+                    }
+                  }}
+                />
+              </>
+            )}
           />
 
           <h4>BILDER</h4>
 
           <h4>(VALFRITT) DATUM</h4>
-
+          <Controller
+            name="date"
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <Calendar
+                mode="single"
+                captionLayout="dropdown"
+                className="rounded-lg border"
+                selected={value}
+                onSelect={onChange}
+              />
+            )}
+          />
           <h4>TIDER</h4>
 
           <h4>PLATS</h4>
