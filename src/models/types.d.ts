@@ -19,6 +19,13 @@ type weekDay =
   | "Måndag - Fredag"
   | "Lördag - Söndag";
 
+type GeoResult = {
+  place_id: number;
+  display_name: string;
+  lat: string;
+  lon: string;
+};
+
 type User = {
   _id: string;
   name: string;
@@ -58,20 +65,4 @@ type Listing = {
 
   website?: string;
   host: User;
-};
-
-type CreateListingInputs = {
-  title: string;
-  description: string;
-  type: listingType;
-  category: {
-    predefinedCategory?: category[];
-    customCategory?: string[];
-  };
-  images: ImageUpload[];
-  date?: Date;
-  openingHours: OpeningHours[];
-  location: { city: string; type: "Point"; coordinates: [number, number] };
-
-  website?: string;
 };

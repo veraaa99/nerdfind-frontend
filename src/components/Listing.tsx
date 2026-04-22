@@ -7,8 +7,8 @@ type ListingProps = {
 };
 
 const Listing = ({ listing }: ListingProps) => {
-  const [long, lat] = listing.location.coordinates;
-  const position: [number, number] = [long, lat];
+  const [lng, lat] = listing.location.coordinates;
+  const position: [number, number] = [lat, lng];
 
   return (
     <div>
