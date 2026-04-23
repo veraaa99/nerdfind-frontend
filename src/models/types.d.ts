@@ -38,7 +38,7 @@ type User = {
 type ImageUpload = {
   url: string;
   publicId: string;
-  alt: string;
+  alt?: string;
 };
 
 type OpeningHours = {

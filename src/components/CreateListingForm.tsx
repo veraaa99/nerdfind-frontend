@@ -10,6 +10,8 @@ import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Input } from "./ui/input";
 import { Calendar } from "./ui/calendar";
 
+import ImageKit from "imagekit-javascript";
+
 // ARRAYS
 const categories: string[] = [
   "Tv-spel",
@@ -49,13 +51,17 @@ const openingHoursSchema = z.object({
   }),
 });
 
-// IMAGE UPLOAD SCHEMA
+// IMAGE UPLOAD SCHEMA + IMAGEKIT
 const imageSchema = z.object({
   url: z.string(),
   publicId: z.string().min(1),
-  alt: z.string(),
+  alt: z.string().optional(),
 });
-const imagesSchema = z.array(imageSchema);
+
+const imagekit = new ImageKit({
+  publicKey: import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY,
+  urlEndpoint: import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT,
+});
 
 // LOCATIONSCHEMA
 const locationSchema = z.object({
@@ -69,11 +75,11 @@ const locationSchema = z.object({
 
 // FORM SCHEMA
 const formSchema = z.object({
-  title: z.string().nonempty({ message: "Ange en titel" }),
-  description: z.string().nonempty({ message: "Ange en beskrivning" }),
+  title: z.string().nonempty(),
+  description: z.string().nonempty(),
   type: z.enum(["Event", "Butik", "Mässa", "Loppis"]),
   category: categoriesSchema,
-  images: imagesSchema,
+  images: z.array(imageSchema),
   date: z.date().optional(),
   openingHours: z.array(openingHoursSchema).refine(
     (items) => {
@@ -98,7 +104,10 @@ const CreateListingForm = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [customCategories, setCustomCategories] = useState<string[]>([]);
   const [categoryInput, setCategoryInput] = useState("");
-  // IMAGES - UPLOAD
+  // IMAGES - PREVIEWS & UPLOAD
+  const [localImages, setLocalImages] = useState<
+    { file: File; preview: string }[]
+  >([]);
   const [uploading, setUploading] = useState(false);
 
   // USEFORM
@@ -120,7 +129,7 @@ const CreateListingForm = () => {
         predefinedCategory: undefined,
         customCategory: undefined,
       },
-      images: undefined,
+      images: [],
       date: undefined,
       openingHours: [],
       location: {
@@ -160,62 +169,29 @@ const CreateListingForm = () => {
     const updated = [...customCategories, trimmed];
     setCustomCategories(updated);
     setCategoryInput("");
-    return updated; // ✔ viktigt
+    return updated;
   }
   function removeCategory(category: string) {
     const updated = customCategories.filter((c) => c !== category);
     setCustomCategories(updated);
-    return updated; // ✔ viktigt
+    return updated;
   }
 
-  // IMAGES - HANDLE & UPLOAD
-  const imagesFieldArray = useFieldArray({
-    control,
-    name: "images",
-  });
-
+  // IMAGES - UPLOAD
   async function uploadImage(file: File) {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "YOUR_UPLOAD_PRESET");
+    const auth = await fetch("/api/imagekit-auth").then((res) => res.json());
 
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload",
-      {
-        method: "POST",
-        body: formData,
-      },
-    );
+    const result = await imagekit.upload({
+      file,
+      fileName: file.name,
+      ...auth,
+    });
 
-    if (!res.ok) throw new Error("Upload failed");
-
-    return res.json();
-
-    // const data = await res.json();
-
-    // return {
-    //   url: data.secure_url,
-    //   publicId: data.public_id,
-    // };
+    return {
+      url: result.url,
+      publicId: result.fileId,
+    };
   }
-
-  const handleImageUpload = async (file: File) => {
-    try {
-      setUploading(true);
-
-      const data = await uploadImage(file);
-
-      imagesFieldArray.append({
-        url: data.secure_url,
-        publicId: data.public_id,
-        alt: "",
-      });
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setUploading(false);
-    }
-  };
 
   // OPENING HOURS - HANDLE HOURS & DAYS
   const openingHoursFieldArray = useFieldArray({
@@ -243,6 +219,8 @@ const CreateListingForm = () => {
   // ONSUBMIT
   const onSubmit = (data: CreateListingInputs) => {
     console.log(data);
+    console.log(localImages);
+
     // if (
     //   !data.title ||
     //   !data.images ||
@@ -420,35 +398,62 @@ const CreateListingForm = () => {
 
           {/* IMAGES */}
           <h4>BILDER</h4>
-          <input
-            type="file"
-            multiple
-            onChange={(e) => {
-              const files = Array.from(e.target.files || []);
-              files.forEach(handleImageUpload);
+
+          <Controller
+            name="images"
+            control={control}
+            render={() => {
+              return (
+                <div>
+                  {/* FILE INPUT */}
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files || []);
+
+                      const mapped = files.map((file) => ({
+                        file,
+                        preview: URL.createObjectURL(file),
+                      }));
+
+                      setLocalImages((prev) => [...prev, ...mapped]);
+
+                      e.target.value = "";
+                    }}
+                  />
+
+                  {/* PREVIEW GRID */}
+                  <div className="flex gap-4 flex-wrap mt-4">
+                    {localImages.map((img, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={img.preview}
+                          className="w-32 h-32 object-cover rounded"
+                        />
+
+                        {/* REMOVE */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            URL.revokeObjectURL(img.preview);
+
+                            setLocalImages((prev) =>
+                              prev.filter((_, i) => i !== index),
+                            );
+                          }}
+                          className="absolute top-1 right-1 bg-red-500 text-white px-2"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
             }}
           />
-          {uploading && <p>Laddar upp bild...</p>}
-
-          <div className="flex gap-4 flex-wrap mt-4">
-            {imagesFieldArray.fields.map((img, index) => (
-              <div key={img.id} className="relative">
-                <img
-                  src={img.url}
-                  alt=""
-                  className="w-32 h-32 object-cover rounded"
-                />
-
-                <button
-                  type="button"
-                  onClick={() => imagesFieldArray.remove(index)}
-                  className="absolute top-1 right-1 bg-red-500 text-white px-2"
-                >
-                  ✕
-                </button>
-              </div>
-            ))}
-          </div>
 
           {/* DATE */}
           <h4>(VALFRITT) DATUM</h4>
@@ -587,12 +592,14 @@ const CreateListingForm = () => {
 
           {/* WEBSITE */}
           <h4>(VALFRITT) LÄNK TILL HEMSIDA</h4>
-          <input type="text" />
+          <input type="website" id="website" {...register("website")} />
 
           {/* CREATE LISTING */}
-          <button type="submit" className="cursor-pointer">
-            SKAPA ANNONS
-          </button>
+          <div>
+            <button type="submit" className="cursor-pointer">
+              SKAPA ANNONS
+            </button>
+          </div>
         </div>
       </form>
     </div>
