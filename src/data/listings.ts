@@ -22,7 +22,7 @@ export const dummyListings: Listing[] = [
     location: {
       city: "Stockholm",
       type: "Point",
-      coordinates: [59.330833, 18.070994],
+      coordinates: [18.070994, 59.330833],
     },
     website:
       "https://images.unsplash.com/photo-1589208733220-40ef1ca2bdb7?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -41,7 +41,6 @@ export const dummyListings: Listing[] = [
         alt: "Ett foto på körsbärsblommorna i Kungsträdgården.",
       },
     ],
-    date: new Date("2026-04-30"),
     openingHours: [
       { day: "Måndag - Fredag", times: { start: "10:00", end: "18:00" } },
       { day: "Lördag - Söndag", times: { start: "12:00", end: "16:00" } },
@@ -49,11 +48,11 @@ export const dummyListings: Listing[] = [
     location: {
       city: "Stockholm",
       type: "Point",
-      coordinates: [59.330833, 18.070994],
+      coordinates: [18.070994, 59.330833],
     },
     website:
       "https://images.unsplash.com/photo-1589208733220-40ef1ca2bdb7?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    host: dummyUsers[0],
+    host: dummyUsers[1],
   },
   {
     _id: "3",
@@ -75,7 +74,7 @@ export const dummyListings: Listing[] = [
     location: {
       city: "Uppsala",
       type: "Point",
-      coordinates: [59.330833, 18.070994],
+      coordinates: [17.64654, 59.85819],
     },
     website:
       "https://images.unsplash.com/photo-1589208733220-40ef1ca2bdb7?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",

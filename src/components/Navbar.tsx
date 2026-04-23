@@ -3,7 +3,8 @@ import { useAuth } from "../contexts/authContext";
 import { dummyUsers } from "@/data/users";
 
 const Navbar = () => {
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const user = dummyUsers[0];
 
   return (
     <div className="w-full">

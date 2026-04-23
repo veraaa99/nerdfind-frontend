@@ -4,8 +4,8 @@ import { useAuth } from "@/contexts/authContext";
 import { dummyUsers } from "@/data/users";
 
 const Login = () => {
-  const { user } = useAuth();
-  // const user = dummyUsers[0];
+  // const { user } = useAuth();
+  const user = dummyUsers[0];
 
   return (
     <div>

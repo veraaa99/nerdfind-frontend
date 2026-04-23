@@ -100,7 +100,10 @@ const Listing = ({ listing }: ListingProps) => {
       <h3>ARRANGÖR: {listing.host.name}</h3>
       {listing.website && (
         <>
-          <h4>HEMSIDA:</h4> <p>{listing.website}</p>
+          <h4>HEMSIDA:</h4>{" "}
+          <a className="underline" href={listing.website} target="_blank">
+            {listing.website}
+          </a>
         </>
       )}
     </div>
