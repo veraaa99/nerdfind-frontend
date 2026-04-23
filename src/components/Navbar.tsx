@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 import { useAuth } from "../contexts/authContext";
+import { dummyUsers } from "@/data/users";
 
 const Navbar = () => {
   const { user } = useAuth();

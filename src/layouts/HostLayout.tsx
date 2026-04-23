@@ -1,19 +1,12 @@
-import { Outlet, useNavigate, type NavigateFunction } from "react-router";
+import { Navigate, Outlet } from "react-router";
 import { useAuth } from "../contexts/authContext";
-import { dummyUsers } from "@/data/users";
 
 const HostLayout = () => {
-  // const { user } = useAuth();
-  const user = dummyUsers[0];
-  const navigate: NavigateFunction = useNavigate();
+  const { user } = useAuth();
 
   return (
     <>
-      {user && user.isHost == true ? (
-        <Outlet />
-      ) : (
-        navigate("/", { replace: true })
-      )}
+      {user && user.isHost == true ? <Outlet /> : <Navigate to="/" replace />}
     </>
   );
 };
