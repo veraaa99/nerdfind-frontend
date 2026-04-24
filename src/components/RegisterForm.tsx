@@ -1,25 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import z from "zod";
 import { Badge } from "./ui/badge";
 import { Checkbox } from "./ui/checkbox";
-
-// FORM SCHEMA
-const formSchema = z
-  .object({
-    name: z.string().nonempty(),
-    email: z.email().nonempty(),
-    password: z.string().nonempty().min(10),
-    confirmPassword: z.string(),
-    isHost: z.boolean(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Lösenorden matchar inte",
-    path: ["confirmPassword"],
-  });
-type RegisterUserInputs = z.infer<typeof formSchema>;
+import { useAuth } from "@/contexts/authContext";
+import { registerFormSchema, type RegisterUserInputs } from "@/schemas/zod";
+import { useNavigate } from "react-router";
+import { useState } from "react";
 
 const RegisterForm = () => {
+  const { actions } = useAuth();
+  const navigate = useNavigate();
+  const [registerFormError, setRegisterFormError] = useState<string>("");
+
   // USEFORM
   const {
     register,
@@ -30,7 +22,7 @@ const RegisterForm = () => {
     watch,
     setValue,
   } = useForm<RegisterUserInputs>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(registerFormSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -46,9 +38,25 @@ const RegisterForm = () => {
   };
 
   // ONSUBMIT
-  const onSubmit = (data: RegisterUserInputs) => {
-    console.log(data);
-  };
+  async function onSubmit(data: RegisterUserInputs) {
+    if (!data.name || !data.email || !data.password || !data.confirmPassword) {
+      setRegisterFormError("Fyll i alla fält");
+      return;
+    }
+
+    try {
+      await actions.registerUser(data);
+    } catch (error: any) {
+      setRegisterFormError(
+        error.response?.data?.message || "Något gick fel, försök igen.",
+      );
+      return;
+    }
+
+    setRegisterFormError("");
+    navigate("/", { replace: true });
+    return;
+  }
 
   return (
     <div>
@@ -61,6 +69,7 @@ const RegisterForm = () => {
             id="name"
             {...register("name", { required: true })}
           />
+          {errors.name && <p>Vänligen fyll i ett namn</p>}
           {/* EMAIL */}
           <h4>EMAIL</h4>
           <input
@@ -68,7 +77,7 @@ const RegisterForm = () => {
             id="email"
             {...register("email", { required: true })}
           />
-
+          {errors.email && <p>Vänligen fyll i en epostadress</p>}
           {/* PASSWORD */}
           <h4>LÖSENORD (MINST 10 TECKEN)</h4>
           <input
@@ -76,6 +85,7 @@ const RegisterForm = () => {
             id="password"
             {...register("password", { required: true })}
           />
+          {errors.password && <p>Vänligen fyll i ett lösenord</p>}
 
           {/* CONFIRM PASSWORD */}
           <h4>UPPREPA LÖSENORD</h4>
@@ -84,6 +94,7 @@ const RegisterForm = () => {
             id="confirmPassword"
             {...register("confirmPassword", { required: true })}
           />
+          {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
 
           {/* IS HOST */}
           <h4>ÄR DETTA ETT FÖRETAGSKONTO?</h4>
@@ -103,6 +114,10 @@ const RegisterForm = () => {
               </div>
             )}
           />
+
+          <div>
+            <p>{registerFormError}</p>
+          </div>
 
           {/* REGISTER USER */}
           <div>

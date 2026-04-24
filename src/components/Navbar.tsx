@@ -1,10 +1,14 @@
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { useAuth } from "../contexts/authContext";
-import { dummyUsers } from "@/data/users";
 
 const Navbar = () => {
-  // const { user } = useAuth();
-  const user = dummyUsers[0];
+  const { user, actions } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    actions.logoutUser();
+    navigate("/", { replace: true });
+  };
 
   return (
     <div className="w-full">
@@ -29,7 +33,11 @@ const Navbar = () => {
                 <NavLink to="login">LOGGA IN</NavLink>
               </li>
             )}
-            {user && <li>LOGGA UT</li>}
+            {user && (
+              <p className="cursor-pointer" onClick={handleLogout}>
+                LOGGA UT
+              </p>
+            )}
           </ul>
         </div>
       </div>

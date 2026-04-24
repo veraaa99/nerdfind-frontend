@@ -1,20 +1,41 @@
+import axios from "@/api/axios";
 import Listing from "@/components/Listing";
 import ListingCardSmall from "@/components/ListingCardSmall";
+import { useAuth } from "@/contexts/authContext";
 import { dummyListings } from "@/data/listings";
-import { dummyUsers } from "@/data/users";
 import { useEffect, useState } from "react";
 
 const Profile = () => {
-  // const { user } = useAuth();
-  const user = dummyUsers[1];
+  const { user, token } = useAuth();
+
+  const [userProfile, setUserProfile] = useState<User | null>(null);
   const [savedListings, setSavedListings] = useState<Listing[]>([]);
   const [userCreatedListings, setUserCreatedListings] = useState<Listing[]>([]);
 
   useEffect(() => {
-    const findSavedListings = () => {
-      if (!user?.savedListings?.length) return;
+    const getUserById = async () => {
+      if (!user) return;
 
-      const savedSet = new Set(user.savedListings);
+      try {
+        const res = await axios.get(`/api/users/${user}`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.status !== 200) return;
+        setUserProfile(res.data);
+        return;
+      } catch (error: any) {
+        console.log(error.response.data);
+        return;
+      }
+    };
+
+    const findSavedListings = () => {
+      if (!userProfile?.savedListings?.length) return;
+
+      const savedSet = new Set(userProfile.savedListings);
 
       const foundListings = dummyListings.filter((listing) =>
         savedSet.has(listing._id),
@@ -22,26 +43,28 @@ const Profile = () => {
 
       setSavedListings(foundListings);
     };
+
     const findCreatedListings = () => {
-      if (!user.isHost) return;
+      if (!userProfile?.isHost) return;
 
       const foundCreatedListings = dummyListings.filter(
-        (listing) => listing.host._id == user._id,
+        (listing) => listing.host._id == userProfile._id,
       );
       setUserCreatedListings(foundCreatedListings);
     };
 
+    getUserById();
     findSavedListings();
     findCreatedListings();
-  }, [user]);
+  }, []);
 
   return (
     <div>
-      {user && (
+      {userProfile && (
         <>
           <div>
             <h1>PROFIL</h1>
-            <h2>Välkommen {user.name}!</h2>
+            <h2>Välkommen {userProfile.name}!</h2>
           </div>
 
           <div>
@@ -59,7 +82,7 @@ const Profile = () => {
             )}
           </div>
 
-          {user.isHost && (
+          {userProfile.isHost && (
             <>
               <h3>SKAPADE ANNONSER</h3>
               {userCreatedListings.length == 0 ? (

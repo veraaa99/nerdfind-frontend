@@ -1,4 +1,6 @@
-import axios from "axios";
+import axios from "@/api/axios";
+import type { LoginUserInputs, RegisterUserInputs } from "@/schemas/zod";
+
 import {
   createContext,
   useContext,
@@ -8,18 +10,20 @@ import {
 } from "react";
 
 type AuthState = {
-  user: User | null;
+  user: string | null;
+  isHost: boolean;
   token: string | null;
   isAuthChecked: boolean;
   actions: {
-    registerUser: () => void;
-    loginUser: () => void;
+    registerUser: (userInformation: RegisterUserInputs) => void;
+    loginUser: (userInformation: LoginUserInputs) => void;
     logoutUser: () => void;
   };
 };
 
 const defaultState: AuthState = {
   user: null,
+  isHost: false,
   token: null,
   isAuthChecked: false,
   actions: {
@@ -32,7 +36,9 @@ const defaultState: AuthState = {
 export const AuthContext = createContext<AuthState>(defaultState);
 
 const AuthContextProvider = ({ children }: PropsWithChildren) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<string | null>(null);
+  const [isHost, setIsHost] = useState<boolean>(false);
+
   const [token, setToken] = useState<string | null>(null);
   const [isAuthChecked, setIsAuthChecked] = useState<boolean>(false);
 
@@ -42,7 +48,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
         const userToken: string | null = sessionStorage.getItem("jwt");
         if (!userToken) return;
 
-        const res = await axios.get("/auth/check", {
+        const res = await axios.get("api/users/check", {
           headers: {
             authorization: `Bearer ${sessionStorage.getItem("jwt") || ""}`,
           },
@@ -50,11 +56,18 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
         if (res.status === 200) {
           setToken(sessionStorage.getItem("jwt"));
-          setUser(res.data);
+          setUser(res.data._id);
+          if (res.data.isHost) {
+            setIsHost(true);
+          }
         }
       } catch (error: any) {
+        console.log(error.response.data);
         console.log(error.message);
         sessionStorage.removeItem("jwt");
+        setIsHost(false);
+
+        throw error;
       } finally {
         setIsAuthChecked(true);
       }
@@ -62,21 +75,63 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     checkToken();
   }, []);
 
-  const registerUser: typeof defaultState.actions.registerUser = async () => {};
+  const registerUser: typeof defaultState.actions.registerUser = async (
+    userInformation: RegisterUserInputs,
+  ) => {
+    try {
+      const res = await axios.post("api/users/register", userInformation);
 
-  const loginUser: typeof defaultState.actions.loginUser = async () => {};
+      if (res.status !== 201) return;
+
+      setToken(res.data.userToken);
+      setUser(res.data._id);
+      sessionStorage.setItem("jwt", res.data.userToken);
+      if (res.data.isHost) {
+        setIsHost(true);
+      }
+      return;
+    } catch (error: any) {
+      console.log(error.response.data);
+      throw error;
+    }
+  };
+
+  const loginUser: typeof defaultState.actions.loginUser = async (
+    userInformation: LoginUserInputs,
+  ) => {
+    try {
+      const res = await axios.post("api/users/login", userInformation);
+
+      if (res.status !== 200) return;
+
+      setToken(res.data.userToken);
+      setUser(res.data._id);
+      sessionStorage.setItem("jwt", res.data.userToken);
+      if (res.data.isHost) {
+        setIsHost(true);
+      }
+      return;
+    } catch (error: any) {
+      console.log(error.response.data);
+      throw error;
+    }
+  };
 
   const logoutUser: typeof defaultState.actions.logoutUser = () => {
     sessionStorage.removeItem("jwt");
     setToken(null);
     setUser(null);
+    setIsHost(false);
+
     return;
   };
 
   const actions = { registerUser, loginUser, logoutUser };
 
   return (
-    <AuthContext.Provider value={{ user, token, isAuthChecked, actions }}>
+    <AuthContext.Provider
+      value={{ user, isHost, token, isAuthChecked, actions }}
+    >
       {children}
     </AuthContext.Provider>
   );

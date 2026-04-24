@@ -1,15 +1,15 @@
+import { useAuth } from "@/contexts/authContext";
+import { loginFormSchema, type LoginUserInputs } from "@/schemas/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import z from "zod";
-
-// FORM SCHEMA
-const formSchema = z.object({
-  email: z.email().nonempty(),
-  password: z.string().nonempty(),
-});
-type LoginUserInputs = z.infer<typeof formSchema>;
+import { useNavigate } from "react-router";
 
 const LoginForm = () => {
+  const { actions } = useAuth();
+  const navigate = useNavigate();
+  const [formError, setFormError] = useState<string>("");
+
   // USEFORM
   const {
     register,
@@ -20,7 +20,7 @@ const LoginForm = () => {
     watch,
     setValue,
   } = useForm<LoginUserInputs>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(loginFormSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -33,9 +33,25 @@ const LoginForm = () => {
   };
 
   // ONSUBMIT
-  const onSubmit = (data: LoginUserInputs) => {
-    console.log(data);
-  };
+  async function onSubmit(data: LoginUserInputs) {
+    if (!data.email || !data.password) {
+      setFormError("Fyll i alla fält");
+      return;
+    }
+
+    try {
+      await actions.loginUser(data);
+    } catch (error: any) {
+      setFormError(
+        error.response?.data?.message || "Något gick fel, försök igen.",
+      );
+      return;
+    }
+
+    setFormError("");
+    navigate("/", { replace: true });
+    return;
+  }
 
   return (
     <div>
@@ -48,6 +64,7 @@ const LoginForm = () => {
             id="email"
             {...register("email", { required: true })}
           />
+          {errors.email && <p>Vänligen fyll i en epostadress</p>}
 
           {/* PASSWORD */}
           <h4>LÖSENORD</h4>
@@ -56,6 +73,11 @@ const LoginForm = () => {
             id="password"
             {...register("password", { required: true })}
           />
+          {errors.password && <p>{errors.password.message}</p>}
+
+          <div>
+            <p>{formError}</p>
+          </div>
 
           {/* LOGIN USER */}
           <div>

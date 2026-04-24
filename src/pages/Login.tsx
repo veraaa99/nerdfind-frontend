@@ -1,11 +1,9 @@
 import LoginForm from "@/components/LoginForm";
 import RegisterForm from "@/components/RegisterForm";
 import { useAuth } from "@/contexts/authContext";
-import { dummyUsers } from "@/data/users";
 
 const Login = () => {
-  // const { user } = useAuth();
-  const user = dummyUsers[0];
+  const { user } = useAuth();
 
   return (
     <div>
@@ -18,6 +16,8 @@ const Login = () => {
         <>
           <h1>LOGGA IN</h1>
           <LoginForm />
+          <h2>HAR DU INGET KONTO ÄNNU? REGISTRERA DIG DIREKT!</h2>
+          <RegisterForm />
         </>
       )}
     </div>
