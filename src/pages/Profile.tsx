@@ -10,7 +10,7 @@ const Profile = () => {
 
   const [userProfile, setUserProfile] = useState<User | null>(null);
   const [savedListings, setSavedListings] = useState<Listing[]>([]);
-  const [userCreatedListings, setUserCreatedListings] = useState<Listing[]>([]);
+  const [userCreatedListings, setUserCreatedListings] = useState<Listing[]>([]); // TODO
 
   useEffect(() => {
     const getUserById = async () => {
@@ -32,16 +32,18 @@ const Profile = () => {
       }
     };
 
-    const findSavedListings = () => {
+    const findSavedListings = async () => {
       if (!userProfile?.savedListings?.length) return;
 
-      const savedSet = new Set(userProfile.savedListings);
+      const res = await axios.get("api/users/savedlistings", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
 
-      const foundListings = dummyListings.filter((listing) =>
-        savedSet.has(listing._id),
-      );
+      if (res.status !== 200) return;
 
-      setSavedListings(foundListings);
+      setSavedListings(res.data);
     };
 
     const findCreatedListings = () => {
@@ -56,7 +58,7 @@ const Profile = () => {
     getUserById();
     findSavedListings();
     findCreatedListings();
-  }, []);
+  }, [userProfile, savedListings]);
 
   return (
     <div>
