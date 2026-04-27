@@ -1,14 +1,28 @@
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import SaveListingButton from "./SaveListingButton";
+import { useEffect, useState } from "react";
+import axios from "@/api/axios";
 
 type ListingProps = {
   listing: Listing;
 };
 
 const Listing = ({ listing }: ListingProps) => {
-  const [lng, lat] = listing.location.coordinates;
-  const position: [number, number] = [lat, lng];
+  const [lat, lng] = listing.location.coordinates;
+  const position: [number, number] = [lng, lat];
+  const [host, setHost] = useState<User | null>(null);
+
+  useEffect(() => {
+    const getUserByID = async (userId: string | User) => {
+      const res = await axios.get(`api/users/${userId}`);
+
+      if (res.status !== 200) return;
+
+      setHost(res.data);
+    };
+    getUserByID(listing.host);
+  }, []);
 
   return (
     <div>
@@ -35,18 +49,18 @@ const Listing = ({ listing }: ListingProps) => {
               <>
                 <h3>TIDER & DATUM</h3>
                 <p>
-                  {listing.date.toLocaleDateString("sv-SE", {
+                  {new Date(listing.date).toLocaleDateString("sv-SE", {
                     weekday: "long",
                     day: "numeric",
                     year: "numeric",
                     month: "long",
                   })}{" "}
                   (
-                  {listing.date.getFullYear() +
+                  {new Date(listing.date).getFullYear() +
                     "-" +
-                    (listing.date.getMonth() + 1) +
+                    (new Date(listing.date).getMonth() + 1) +
                     "-" +
-                    listing.date.getDate()}
+                    new Date(listing.date).getDate()}
                   )
                 </p>
 
@@ -97,7 +111,7 @@ const Listing = ({ listing }: ListingProps) => {
         </Marker>
       </MapContainer>
 
-      <h3>ARRANGÖR: {listing.host.name}</h3>
+      <h3>ARRANGÖR: {host?.name}</h3>
       {listing.website && (
         <>
           <h4>HEMSIDA:</h4>{" "}

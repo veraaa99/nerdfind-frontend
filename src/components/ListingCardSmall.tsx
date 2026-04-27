@@ -1,3 +1,5 @@
+import axios from "@/api/axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 type ListingProps = {
@@ -5,6 +7,19 @@ type ListingProps = {
 };
 
 const ListingCardSmall = ({ listing }: ListingProps) => {
+  const [host, setHost] = useState<User | null>(null);
+
+  useEffect(() => {
+    const getUserByID = async (userId: string | User) => {
+      const res = await axios.get(`api/users/${userId}`);
+
+      if (res.status !== 200) return;
+
+      setHost(res.data);
+    };
+    getUserByID(listing.host);
+  }, []);
+
   return (
     <div className="w-52 rounded-md overflow-hidden">
       <Link to={`/listings/${listing._id}`}>
@@ -25,7 +40,7 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
                 <p>{category}</p>
               ))}
           </div>
-          <div>{listing.host.name}</div>
+          <div>{host?.name}</div>
         </div>
       </Link>
     </div>
