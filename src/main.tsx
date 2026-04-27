@@ -14,6 +14,7 @@ import CreateListing from "./pages/CreateListing";
 import AllListings from "./pages/AllListings";
 import ListingDetails from "./pages/ListingDetails";
 import SearchResult from "./pages/SearchResult";
+import ListingContextProvider from "./contexts/listingContext";
 
 const router = createBrowserRouter([
   {
@@ -71,7 +72,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthContextProvider>
-      <RouterProvider router={router} />
+      <ListingContextProvider>
+        <RouterProvider router={router} />
+      </ListingContextProvider>
     </AuthContextProvider>
   </StrictMode>,
 );

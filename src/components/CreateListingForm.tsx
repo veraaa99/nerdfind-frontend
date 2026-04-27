@@ -1,6 +1,5 @@
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Badge } from "./ui/badge";
@@ -11,92 +10,28 @@ import { Input } from "./ui/input";
 import { Calendar } from "./ui/calendar";
 
 import ImageKit from "imagekit-javascript";
+import {
+  categories,
+  createListingSchema,
+  weekDays,
+  type CreateListingInputs,
+} from "@/schemas/zod";
+import { useListing } from "@/contexts/listingContext";
+import { useNavigate } from "react-router";
+import axios from "@/api/axios";
 
-// ARRAYS
-const categories: string[] = [
-  "Tv-spel",
-  "Sci-fi",
-  "Serietidningar",
-  "Cosplay",
-  "Anime",
-  "Manga",
-  "Rollspel",
-];
-
-const weekDays = [
-  "Måndag",
-  "Tisdag",
-  "Onsdag",
-  "Torsdag",
-  "Fredag",
-  "Lördag",
-  "Söndag",
-  "Måndag - Fredag",
-  "Lördag - Söndag",
-];
-
-// SCHEMAS
-// CATEGORIES SCHEMA
-const categoriesSchema = z.object({
-  predefinedCategory: z.array(z.enum(categories)).optional(),
-  customCategory: z.array(z.string()).optional(),
-});
-
-// OPENINGHOURS SCHEMA
-const openingHoursSchema = z.object({
-  day: z.string().min(1),
-  times: z.object({
-    start: z.union([z.string(), z.literal("STÄNGT")]),
-    end: z.string().optional(),
-  }),
-});
-
-// IMAGE UPLOAD SCHEMA + IMAGEKIT
-const imageSchema = z.object({
-  url: z.string(),
-  publicId: z.string().min(1),
-  alt: z.string().optional(),
-});
-
+//  IMAGEKIT
 const imagekit = new ImageKit({
   publicKey: import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY,
   urlEndpoint: import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT,
 });
 
-// LOCATIONSCHEMA
-const locationSchema = z.object({
-  city: z.string().min(1, "Stad krävs"),
-  type: z.literal("Point"),
-  coordinates: z.tuple([
-    z.number(), // long
-    z.number(), // lat
-  ]),
-});
-
-// FORM SCHEMA
-const formSchema = z.object({
-  title: z.string().nonempty(),
-  description: z.string().nonempty(),
-  type: z.enum(["Event", "Butik", "Mässa", "Loppis"]),
-  category: categoriesSchema,
-  images: z.array(imageSchema),
-  date: z.date().optional(),
-  openingHours: z.array(openingHoursSchema).refine(
-    (items) => {
-      const days = items.map((i) => i.day);
-      return new Set(days).size === days.length;
-    },
-    {
-      message: "Vänligen välj en dag som inte redan är vald",
-    },
-  ),
-  location: locationSchema,
-  website: z.string().optional(),
-});
-type CreateListingInputs = z.infer<typeof formSchema>;
-
 // CREATE LISTING FORM COMPONENT
 const CreateListingForm = () => {
+  const { actions } = useListing();
+  const [listingFormError, setListingFormError] = useState<string>("");
+  // const navigate = useNavigate();
+
   // LOCATION - QUERY & RESULTS
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GeoResult[]>([]);
@@ -108,7 +43,6 @@ const CreateListingForm = () => {
   const [localImages, setLocalImages] = useState<
     { file: File; preview: string }[]
   >([]);
-  const [uploading, setUploading] = useState(false);
 
   // USEFORM
   const {
@@ -120,7 +54,7 @@ const CreateListingForm = () => {
     watch,
     setValue,
   } = useForm<CreateListingInputs>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(createListingSchema),
     defaultValues: {
       title: "",
       description: "",
@@ -179,7 +113,7 @@ const CreateListingForm = () => {
 
   // IMAGES - UPLOAD
   async function uploadImage(file: File) {
-    const auth = await fetch("/api/imagekit-auth").then((res) => res.json());
+    const { data: auth } = await axios.get("/api/imagekit-auth");
 
     const result = await imagekit.upload({
       file,
@@ -190,6 +124,7 @@ const CreateListingForm = () => {
     return {
       url: result.url,
       publicId: result.fileId,
+      alt: result.name,
     };
   }
 
@@ -217,52 +152,40 @@ const CreateListingForm = () => {
   }
 
   // ONSUBMIT
-  const onSubmit = (data: CreateListingInputs) => {
-    console.log(data);
-    console.log(localImages);
+  async function onSubmit(data: CreateListingInputs) {
+    if (
+      !data.title ||
+      !data.description ||
+      !data.type ||
+      !data.category ||
+      !localImages ||
+      !data.openingHours ||
+      !data.location
+    ) {
+      setListingFormError("Fyll i alla obligatoriska fält");
+      return;
+    }
 
-    // if (
-    //   !data.title ||
-    //   !data.images ||
-    //   !data.location ||
-    //   !data.description ||
-    //   !data.rules ||
-    //   !data.dates ||
-    //   !data.guests ||
-    //   !data.rooms
-    // ) {
-    //   setFormMessage("Please fill in all required fields");
-    //   console.log("Please fill in all required fields");
-    //   return;
-    // }
-    // const allDatesInRange = getDatesInRange(data.dates.from, data.dates.to);
-    // const newArray = allDatesInRange?.map((date) => {
-    //   return format(date, "yyyy-MM-dd");
-    // });
-    // const dataToSubmit = { ...data, dates: newArray };
-    // setLoading(true);
-    // setFormMessage("");
-    // try {
-    //   const res = await axios.post("api/listings", dataToSubmit, {
-    //     headers: {
-    //       authorization: `Bearer ${token}`,
-    //     },
-    //   });
-    //   if (res.status === 201) {
-    //     actions.updateListings(res.data);
-    //     setFormMessage("Castle listing succesfully created!");
-    //     setIsSubmitted(true);
-    //     setIsListingUpdated((isListingUpdated) => !isListingUpdated);
-    //   }
-    //   return;
-    // } catch (error: any) {
-    //   setFormMessage(error.response?.data?.message || "Something went wrong");
-    //   console.log(error.response?.data?.message || "Something went wrong");
-    // } finally {
-    //   setLoading(false);
-    //   return;
-    // }
-  };
+    try {
+      const imageFiles = localImages.map((img) => img.file);
+      const uploadedImages = await Promise.all(
+        imageFiles.map((file) => uploadImage(file)),
+      );
+
+      const createListingData = { ...data, images: uploadedImages };
+
+      await actions.createListing(createListingData);
+    } catch (error: any) {
+      setListingFormError(
+        error.response?.data?.message || "Något gick fel, försök igen.",
+      );
+      return;
+    }
+
+    setListingFormError("");
+    // navigate("/", { replace: true });
+    return;
+  }
 
   return (
     <div>
@@ -275,6 +198,8 @@ const CreateListingForm = () => {
             id="title"
             {...register("title", { required: true })}
           />
+          {errors.title && <p>Vänligen fyll i en titel</p>}
+
           {/* DESCRIPTION */}
           <h4>BESKRIVNING</h4>
           <input
@@ -282,6 +207,7 @@ const CreateListingForm = () => {
             id="description"
             {...register("description", { required: true })}
           />
+          {errors.description && <p>Vänligen fyll i en beskrivning</p>}
 
           {/* TYPE */}
           <h4>TYP AV ANNONS</h4>
@@ -325,6 +251,9 @@ const CreateListingForm = () => {
               </RadioGroup>
             )}
           />
+          {errors.type && (
+            <p>Vänligen välj vilken typ av annons du vill skapa</p>
+          )}
 
           {/* CATEGORY */}
           <h4>KATEGORI</h4>
@@ -395,6 +324,7 @@ const CreateListingForm = () => {
               </>
             )}
           />
+          {errors.category && <p>Vänligen välj minst en kategori</p>}
 
           {/* IMAGES */}
           <h4>BILDER</h4>
@@ -454,6 +384,9 @@ const CreateListingForm = () => {
               );
             }}
           />
+          {errors.images && (
+            <p>Vänligen lägg till minst en bild till din annons</p>
+          )}
 
           {/* DATE */}
           <h4>(VALFRITT) DATUM</h4>
@@ -554,6 +487,9 @@ const CreateListingForm = () => {
                 </div>
               );
             })}
+            {errors.openingHours && (
+              <p>Vänligen välj minst en veckodag och dess öppningstider</p>
+            )}
 
             {/* LÄGG TILL ÖPPETTIDER */}
             <button
@@ -590,9 +526,15 @@ const CreateListingForm = () => {
             </div>
           ))}
 
+          {errors.location && <p>Vänligen välj en adress</p>}
+
           {/* WEBSITE */}
           <h4>(VALFRITT) LÄNK TILL HEMSIDA</h4>
           <input type="website" id="website" {...register("website")} />
+
+          <div>
+            <p>{listingFormError}</p>
+          </div>
 
           {/* CREATE LISTING */}
           <div>
