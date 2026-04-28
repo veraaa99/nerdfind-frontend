@@ -2,7 +2,6 @@ import axios from "@/api/axios";
 import Listing from "@/components/Listing";
 import ListingCardSmall from "@/components/ListingCardSmall";
 import { useAuth } from "@/contexts/authContext";
-import { dummyListings } from "@/data/listings";
 import { useEffect, useState } from "react";
 
 const Profile = () => {
@@ -10,7 +9,7 @@ const Profile = () => {
 
   const [userProfile, setUserProfile] = useState<User | null>(null);
   const [savedListings, setSavedListings] = useState<Listing[]>([]);
-  const [userCreatedListings, setUserCreatedListings] = useState<Listing[]>([]); // TODO
+  const [userCreatedListings, setUserCreatedListings] = useState<Listing[]>([]);
 
   useEffect(() => {
     const getUserById = async () => {
@@ -35,7 +34,7 @@ const Profile = () => {
     const findSavedListings = async () => {
       if (!userProfile?.savedListings?.length) return;
 
-      const res = await axios.get("api/users/savedlistings", {
+      const res = await axios.get("api/listings/savedlistings", {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -46,13 +45,18 @@ const Profile = () => {
       setSavedListings(res.data);
     };
 
-    const findCreatedListings = () => {
+    const findCreatedListings = async () => {
       if (!userProfile?.isHost) return;
 
-      const foundCreatedListings = dummyListings.filter(
-        (listing) => listing.host._id == userProfile._id,
-      );
-      setUserCreatedListings(foundCreatedListings);
+      const res = await axios.get("api/listings/createdListings", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.status !== 200) return;
+
+      setUserCreatedListings(res.data);
     };
 
     getUserById();
