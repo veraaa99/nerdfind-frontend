@@ -1,102 +1,32 @@
+import axios from "@/api/axios";
 import ListingCardSmall from "@/components/ListingCardSmall";
-import { dummyListings } from "@/data/listings";
+import { useListing } from "@/contexts/listingContext";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
 const SearchResult = () => {
+  const { listings } = useListing();
+
   const [searchParams] = useSearchParams();
-  const [searchResult, setSearchResult] = useState<Listing[]>([]);
+  const [searchResult, setSearchResult] = useState<Listing[] | null>([]);
 
   useEffect(() => {
-    if (searchParams.size == 0) {
-      setSearchResult(dummyListings);
-      return;
-    }
+    const getListingsByFilter = async () => {
+      if (searchParams.size == 0) {
+        setSearchResult(listings);
+        return;
+      }
 
-    const getListingsByFilter = () => {
-      const filtered = dummyListings.filter((listing) => {
-        if (searchParams.has("location")) {
-          if (
-            !searchParams.getAll("location").includes(listing.location.city)
-          ) {
-            return false;
-          }
-        }
+      try {
+        const res = await axios.get(`/api/listings/search/?${searchParams}`);
 
-        if (searchParams.has("type")) {
-          if (listing.type !== searchParams.get("type")) {
-            return false;
-          }
-        }
-
-        if (searchParams.has("category")) {
-          if (listing.category.predefinedCategory) {
-            if (
-              searchParams
-                .getAll("category")
-                .filter((category) =>
-                  listing.category.predefinedCategory?.includes(
-                    category as category,
-                  ),
-                ).length > 0
-            ) {
-              return true;
-            } else {
-              return false;
-            }
-          }
-
-          if (listing.category.customCategory) {
-            if (
-              searchParams
-                .getAll("category")
-                .filter((category) =>
-                  listing.category.customCategory?.includes(category),
-                ).length > 0
-            ) {
-              return true;
-            } else {
-              return false;
-            }
-          }
-        }
-
-        if (searchParams.has("searchString")) {
-          const searchString = searchParams.get("searchString")!.toLowerCase();
-
-          if (listing.title.toLowerCase().includes(searchString)) {
-            return true;
-          } else if (
-            listing.location.city.toLowerCase().includes(searchString)
-          ) {
-            return true;
-          } else if (listing.type.toLowerCase().includes(searchString)) {
-            return true;
-          } else if (listing.description.toLowerCase().includes(searchString)) {
-            return true;
-          } else if (
-            listing.category.predefinedCategory &&
-            listing.category.predefinedCategory?.filter((category) =>
-              category.toLowerCase().includes(searchString),
-            ).length > 0
-          ) {
-            return true;
-          } else if (
-            listing.category.customCategory &&
-            listing.category.customCategory?.filter((category) =>
-              category.toLowerCase().includes(searchString),
-            ).length > 0
-          ) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-
-        return true;
-      });
-
-      setSearchResult(filtered);
+        if (res.status !== 200) return;
+        setSearchResult(res.data);
+        return;
+      } catch (error: any) {
+        console.log(error.response.data);
+        return;
+      }
     };
 
     getListingsByFilter();
@@ -104,12 +34,15 @@ const SearchResult = () => {
 
   return (
     <div>
-      {searchResult !== undefined && (
-        <div>
-          {searchResult.map((listing) => (
-            <ListingCardSmall listing={listing} />
-          ))}
-        </div>
+      {searchResult !== null && searchResult.length > 0 ? (
+        searchResult.map((listing) => <ListingCardSmall listing={listing} />)
+      ) : (
+        <>
+          <p>
+            Inga annonser matchade din sökning. Testa några andra filter eller
+            kom tillbaka senare!
+          </p>
+        </>
       )}
     </div>
   );

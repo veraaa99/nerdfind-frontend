@@ -24,12 +24,16 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
     <div className="w-52 rounded-md overflow-hidden">
       <Link to={`/listings/${listing._id}`}>
         <div>
-          <img src={listing.images[0].url} alt={listing.images[0].url} />
+          <img
+            className="object-cover h-45 w-60 rounded-t-md rounded-r-md"
+            src={listing.images[0].url}
+            alt={listing.images[0].url}
+          />
         </div>
         <div className="p-5">
           <h3>{listing.title}</h3>
           <h4>{listing.type}</h4>
-          <p>{listing.location.city}</p>
+          <p>{listing.location.city.split(",").slice(0, 1).join(" - ")}</p>
           <div>
             {listing.category.predefinedCategory &&
               listing.category.predefinedCategory.map((category) => (

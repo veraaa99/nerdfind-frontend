@@ -33,14 +33,22 @@ const Listing = ({ listing }: ListingProps) => {
           <img
             src={listing.images[0].url}
             alt={listing.images[0].alt}
-            className="w-3xl"
+            className="h-90 w-2xl object-cover"
           />
+
+          <div className="flex gap-4 flex-wrap mt-4">
+            {listing.images.slice(1).map((img, index) => (
+              <div key={index} className="relative">
+                <img src={img.url} className="w-32 h-32 object-cover rounded" />
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="flex justify-between w-2xl">
           <div>
             <p>{listing.type}</p>
-            <p>{listing.location.city}</p>
+            <p>{listing.location.city.split(",").slice(0, 4).join(" - ")}</p>
 
             <h2>BESKRIVNING</h2>
             <p>{listing.description}</p>

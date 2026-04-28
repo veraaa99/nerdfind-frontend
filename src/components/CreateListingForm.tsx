@@ -86,7 +86,7 @@ const CreateListingForm = () => {
 
     const timeout = setTimeout(async () => {
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${query}`,
+        `https://nominatim.openstreetmap.org/search?format=json&q=${query}&addressdetails=1`,
       );
       const data = await res.json();
       setResults(data);
@@ -144,11 +144,10 @@ const CreateListingForm = () => {
   // LOCATION - HANDLE
   function handleSelectLocation(r: GeoResult) {
     setValue("location.city", r.display_name);
-
     setValue("location.coordinates", [parseFloat(r.lon), parseFloat(r.lat)]);
 
     setResults([]);
-    setQuery(r.display_name);
+    setQuery(r.display_name.split(",").slice(0, 4).join(" - "));
   }
 
   // ONSUBMIT
@@ -522,7 +521,11 @@ const CreateListingForm = () => {
               onClick={() => handleSelectLocation(r)}
               className="cursor-pointer"
             >
-              {r.display_name}
+              {r.display_name.split(",").slice(0, 4).join(" - ")} —{" "}
+              {r.address?.city ||
+                r.address?.town ||
+                r.address?.village ||
+                r.address?.municipality}
             </div>
           ))}
 

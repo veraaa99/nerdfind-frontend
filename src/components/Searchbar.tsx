@@ -3,6 +3,7 @@ import { Badge } from "./ui/badge";
 import { Checkbox } from "./ui/checkbox";
 import { dummyListings } from "@/data/listings";
 import { useNavigate, useSearchParams } from "react-router";
+import { useListing } from "@/contexts/listingContext";
 
 const types: string[] = ["Event", "Butik", "Mässa", "Loppis"];
 
@@ -19,6 +20,7 @@ const categories: string[] = [
 const Searchbar = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { listings } = useListing();
 
   const [textInput, setTextInput] = useState<string>();
 

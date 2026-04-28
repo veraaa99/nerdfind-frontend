@@ -24,6 +24,13 @@ type GeoResult = {
   display_name: string;
   lat: string;
   lon: string;
+  name?: string;
+  address?: {
+    city?: string;
+    town?: string;
+    village?: string;
+    municipality?: string;
+  };
 };
 
 type User = {
@@ -61,7 +68,13 @@ type Listing = {
   images: ImageUpload[];
   date?: Date;
   openingHours: OpeningHours[];
-  location: { city: string; type: "Point"; coordinates: [number, number] };
+  location: {
+    // address: string;
+    // TODO: FIX ADRESS AND CITY SEPARATELY
+    city: string;
+    type: "Point";
+    coordinates: [number, number];
+  };
 
   website?: string;
   host: User;

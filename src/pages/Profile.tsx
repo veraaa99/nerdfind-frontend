@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 const Profile = () => {
   const { user, token } = useAuth();
+  // TODO: LOADING
 
   const [userProfile, setUserProfile] = useState<User | null>(null);
   const [savedListings, setSavedListings] = useState<Listing[]>([]);
@@ -62,7 +63,7 @@ const Profile = () => {
     getUserById();
     findSavedListings();
     findCreatedListings();
-  }, [userProfile, savedListings]);
+  }, [userProfile, savedListings, userCreatedListings]);
 
   return (
     <div>
