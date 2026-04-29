@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Badge } from "./ui/badge";
 import { Checkbox } from "./ui/checkbox";
-import { dummyListings } from "@/data/listings";
 import { useNavigate, useSearchParams } from "react-router";
 import { useListing } from "@/contexts/listingContext";
 
@@ -30,11 +29,13 @@ const Searchbar = () => {
   const [selectedLocation, setSelectedLocation] = useState<string[]>([]);
   const [uniqueLocation, setUniqueLocation] = useState<string[]>([]);
 
-  dummyListings.map((listing) => {
-    if (uniqueLocation.indexOf(listing.location.city) === -1) {
-      setUniqueLocation([...uniqueLocation, listing.location.city]);
-    }
-  });
+  if (listings) {
+    listings.map((listing) => {
+      if (uniqueLocation.indexOf(listing.location.city) === -1) {
+        setUniqueLocation([...uniqueLocation, listing.location.city]);
+      }
+    });
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

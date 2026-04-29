@@ -10,7 +10,9 @@ import { useState } from "react";
 const RegisterForm = () => {
   const { actions } = useAuth();
   const navigate = useNavigate();
+
   const [registerFormError, setRegisterFormError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   // USEFORM
   const {
@@ -19,8 +21,6 @@ const RegisterForm = () => {
     control,
     reset,
     formState: { errors },
-    watch,
-    setValue,
   } = useForm<RegisterUserInputs>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -42,7 +42,13 @@ const RegisterForm = () => {
     if (!data.name || !data.email || !data.password || !data.confirmPassword) {
       setRegisterFormError("Fyll i alla fält");
       return;
+    } else if (data.password !== data.confirmPassword) {
+      setRegisterFormError("Lösenorden matchar inte");
+      return;
     }
+
+    setRegisterFormError("");
+    setLoading(true);
 
     try {
       await actions.registerUser(data);
@@ -50,10 +56,20 @@ const RegisterForm = () => {
       setRegisterFormError(
         error.response?.data?.message || "Något gick fel, försök igen.",
       );
+      setLoading(false);
+
       return;
     }
 
     setRegisterFormError("");
+    setLoading(false);
+    reset({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      isHost: false,
+    });
     navigate("/", { replace: true });
     return;
   }
@@ -121,8 +137,8 @@ const RegisterForm = () => {
 
           {/* REGISTER USER */}
           <div>
-            <button type="submit" className="cursor-pointer">
-              SKAPA KONTO
+            <button type="submit" className="cursor-pointer" disabled={loading}>
+              {loading ? "SKAPAR KONTO..." : "SKAPA KONTO"}
             </button>
           </div>
         </div>

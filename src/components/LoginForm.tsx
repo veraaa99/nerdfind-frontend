@@ -8,17 +8,16 @@ import { useNavigate } from "react-router";
 const LoginForm = () => {
   const { actions } = useAuth();
   const navigate = useNavigate();
+
   const [formError, setFormError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   // USEFORM
   const {
     register,
     handleSubmit,
-    control,
     reset,
     formState: { errors },
-    watch,
-    setValue,
   } = useForm<LoginUserInputs>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -39,16 +38,22 @@ const LoginForm = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
       await actions.loginUser(data);
     } catch (error: any) {
       setFormError(
         error.response?.data?.message || "Något gick fel, försök igen.",
       );
+      setLoading(false);
+
       return;
     }
 
     setFormError("");
+    reset({ email: "", password: "" });
+    setLoading(false);
     navigate("/", { replace: true });
     return;
   }
@@ -81,8 +86,8 @@ const LoginForm = () => {
 
           {/* LOGIN USER */}
           <div>
-            <button type="submit" className="cursor-pointer">
-              LOGGA IN
+            <button type="submit" className="cursor-pointer" disabled={loading}>
+              {loading ? "LOGGAR IN..." : "LOGGA IN"}
             </button>
           </div>
         </div>

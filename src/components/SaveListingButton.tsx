@@ -10,109 +10,72 @@ type SaveListingProps = {
 
 const SaveListingButton = ({ listing }: SaveListingProps) => {
   const { user, token } = useAuth();
-  const [saved, setSaved] = useState<boolean>(false);
-  const [userProfile, setUserProfile] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  const saved = currentUser?.savedListings?.includes(listing._id) ?? false;
 
   useEffect(() => {
     const getUserById = async () => {
       if (!user) return;
 
       try {
-        const res = await axios.get(`/api/users/${user}`, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await axios.get(`/api/users/${user}`);
 
-        if (res.status !== 200) return;
-        setUserProfile(res.data);
-        return;
+        if (res.status === 200) {
+          setCurrentUser(res.data);
+        }
       } catch (error: any) {
         console.log(error.response.data);
-        return;
       }
-    };
-
-    const checkListing = () => {
-      if (
-        !userProfile ||
-        !userProfile.savedListings ||
-        userProfile.savedListings.length == 0
-      ) {
-        setSaved(false);
-        return;
-      }
-
-      const savedListing: string | undefined = userProfile.savedListings.find(
-        (l) => l == listing._id,
-      );
-
-      if (savedListing) {
-        setSaved(true);
-      } else {
-        setSaved(false);
-      }
-      return;
     };
 
     getUserById();
-    checkListing();
-  }, [userProfile, listing]);
+  }, [user]);
 
   const handleSaveListing = async () => {
-    if (userProfile && userProfile.savedListings) {
-      const savedListing: string | undefined = userProfile.savedListings.find(
-        (l) => l == listing._id,
+    if (!currentUser) return;
+
+    try {
+      const res = await axios.put(
+        `/api/users/savelisting/${listing._id}`,
+        {},
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        },
       );
 
-      if (savedListing) {
-        try {
-          const res = await axios.put(
-            `/api/users/savelisting/${listing._id}`,
-            {},
-            {
-              headers: {
-                authorization: `Bearer ${sessionStorage.getItem("jwt") || ""}`,
-              },
-            },
-          );
+      if (res.status !== 200) return;
 
-          if (res.status !== 200) return;
-          setSaved(false);
-          return;
-        } catch (error: any) {
-          console.log(error.response.data);
-          return;
-        }
-      } else {
-        try {
-          const res = await axios.put(
-            `/api/users/savelisting/${listing._id}`,
-            {},
-            {
-              headers: {
-                authorization: `Bearer ${sessionStorage.getItem("jwt") || ""}`,
-              },
-            },
-          );
+      setCurrentUser((prev) => {
+        if (!prev) return prev;
 
-          if (res.status !== 200) return;
-          setSaved(true);
-          return;
-        } catch (error: any) {
-          console.log(error.response.data);
-          return;
-        }
-      }
+        const alreadySaved = prev.savedListings?.includes(listing._id);
+
+        return {
+          ...prev,
+          savedListings: alreadySaved
+            ? prev?.savedListings?.filter((id) => id !== listing._id)
+            : [...(prev.savedListings || []), listing._id],
+        };
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
 
   return (
     <>
-      {user == null ? (
+      {currentUser == null ? (
         <button type="button" className="flex gap-1">
           <img src={Bookmark} alt="" className="w-6" />
           LOGGA IN FÖR ATT SPARA EN ANNONS{" "}
+        </button>
+      ) : currentUser && currentUser._id == listing.host ? (
+        <button type="button" className="flex gap-1">
+          <img src={Bookmark} alt="" className="w-6" />
+          DET GÅR INTE ATT SPARA DINA EGNA ANNONSER{" "}
         </button>
       ) : (
         <button

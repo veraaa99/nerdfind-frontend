@@ -71,11 +71,12 @@ type Listing = {
   location: {
     // address: string;
     // TODO: FIX ADRESS AND CITY SEPARATELY
+    address: string;
     city: string;
     type: "Point";
     coordinates: [number, number];
   };
 
   website?: string;
-  host: User;
+  host: User | string;
 };

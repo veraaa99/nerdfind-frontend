@@ -20,6 +20,7 @@ export const dummyListings: Listing[] = [
       { day: "Lördag - Söndag", times: { start: "12:00", end: "16:00" } },
     ],
     location: {
+      address: "Kungsträdgården, Stockholm...",
       city: "Stockholm",
       type: "Point",
       coordinates: [18.070994, 59.330833],
@@ -46,6 +47,7 @@ export const dummyListings: Listing[] = [
       { day: "Lördag - Söndag", times: { start: "12:00", end: "16:00" } },
     ],
     location: {
+      address: "Kungsträdgården, Stockholm...",
       city: "Stockholm",
       type: "Point",
       coordinates: [18.070994, 59.330833],
@@ -72,6 +74,7 @@ export const dummyListings: Listing[] = [
       { day: "Lördag - Söndag", times: { start: "11:00", end: "16:00" } },
     ],
     location: {
+      address: "Vaksala torg, Uppsala...",
       city: "Uppsala",
       type: "Point",
       coordinates: [17.64654, 59.85819],

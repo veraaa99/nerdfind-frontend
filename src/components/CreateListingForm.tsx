@@ -17,7 +17,7 @@ import {
   type CreateListingInputs,
 } from "@/schemas/zod";
 import { useListing } from "@/contexts/listingContext";
-import { useNavigate } from "react-router";
+import { NavLink } from "react-router";
 import axios from "@/api/axios";
 
 //  IMAGEKIT
@@ -30,7 +30,8 @@ const imagekit = new ImageKit({
 const CreateListingForm = () => {
   const { actions } = useListing();
   const [listingFormError, setListingFormError] = useState<string>("");
-  // const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   // LOCATION - QUERY & RESULTS
   const [query, setQuery] = useState("");
@@ -67,6 +68,7 @@ const CreateListingForm = () => {
       date: undefined,
       openingHours: [],
       location: {
+        address: "",
         city: "",
         type: "Point",
         coordinates: [0, 0],
@@ -105,6 +107,7 @@ const CreateListingForm = () => {
     setCategoryInput("");
     return updated;
   }
+
   function removeCategory(category: string) {
     const updated = customCategories.filter((c) => c !== category);
     setCustomCategories(updated);
@@ -143,7 +146,19 @@ const CreateListingForm = () => {
 
   // LOCATION - HANDLE
   function handleSelectLocation(r: GeoResult) {
-    setValue("location.city", r.display_name);
+    const city =
+      r.address?.city ||
+      r.address?.municipality ||
+      r.address?.town ||
+      r.address?.village;
+
+    if (city) {
+      setValue("location.city", city);
+    } else {
+      setValue("location.city", r.display_name.split(",").slice(4).join(" "));
+    }
+
+    setValue("location.address", r.display_name);
     setValue("location.coordinates", [parseFloat(r.lon), parseFloat(r.lat)]);
 
     setResults([]);
@@ -165,6 +180,8 @@ const CreateListingForm = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
       const imageFiles = localImages.map((img) => img.file);
       const uploadedImages = await Promise.all(
@@ -182,7 +199,27 @@ const CreateListingForm = () => {
     }
 
     setListingFormError("");
-    // navigate("/", { replace: true });
+    setLoading(false);
+    setIsSubmitted(true);
+    reset({
+      title: "",
+      description: "",
+      type: undefined,
+      category: {
+        predefinedCategory: undefined,
+        customCategory: undefined,
+      },
+      images: [],
+      date: undefined,
+      openingHours: [],
+      location: {
+        address: "",
+        city: "",
+        type: "Point",
+        coordinates: [0, 0],
+      },
+      website: undefined,
+    });
     return;
   }
 
@@ -541,9 +578,41 @@ const CreateListingForm = () => {
 
           {/* CREATE LISTING */}
           <div>
-            <button type="submit" className="cursor-pointer">
-              SKAPA ANNONS
+            <button
+              type="submit"
+              className="w-50 cursor-pointer relative gap-2 text-center rounded-sm py-2 bg-white text-black hover:bg-green-800 hover:text-white"
+              disabled={loading || isSubmitted}
+            >
+              {loading
+                ? "SKAPAR ANNONS..."
+                : isSubmitted
+                  ? "ANNONS SKAPAD!"
+                  : "SKAPA ANNONS"}
             </button>
+          </div>
+
+          <div>
+            {isSubmitted && (
+              <>
+                <p>Annonsen har skapats!</p>
+                <div>
+                  <NavLink
+                    className="w-50 cursor-pointer relative gap-2 text-center rounded-sm py-2 bg-white text-black hover:bg-green-800 hover:text-white"
+                    to="/profile"
+                  >
+                    {" "}
+                    TILL DINA ANNONSER{" "}
+                  </NavLink>
+                  <NavLink
+                    className="w-50 cursor-pointer relative gap-2 text-center rounded-sm py-2 bg-white text-black hover:bg-green-800 hover:text-white"
+                    to="/"
+                  >
+                    {" "}
+                    TILLBAKA TILL START
+                  </NavLink>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </form>

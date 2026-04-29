@@ -63,7 +63,6 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
         }
       } catch (error: any) {
         console.log(error.response.data);
-        console.log(error.message);
         sessionStorage.removeItem("jwt");
         setIsHost(false);
 

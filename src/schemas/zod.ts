@@ -71,6 +71,7 @@ const imageSchema = z.object({
 
 // LOCATIONSCHEMA
 const locationSchema = z.object({
+  address: z.string().min(1, "Adress krävs"),
   city: z.string().min(1, "Stad krävs"),
   type: z.literal("Point"),
   coordinates: z.tuple([

@@ -2,9 +2,11 @@ import { useListing } from "@/contexts/listingContext";
 import ListingCardSmall from "../components/ListingCardSmall";
 import Searchbar from "../components/Searchbar";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 
 const Home = () => {
   const { listings } = useListing();
+  const location = useLocation();
 
   const [eventListings, setEventListings] = useState<Listing[] | undefined>([]);
   const [marketListings, setMarketListings] = useState<Listing[] | undefined>(
@@ -14,9 +16,12 @@ const Home = () => {
     Listing[] | undefined
   >([]);
   const [storeListings, setStoreListings] = useState<Listing[] | undefined>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const setHomePageListings = () => {
+      setLoading(true);
+
       const eventListingsList: Listing[] | undefined = listings
         ?.filter((listing) => listing.type == "Event")
         .slice(0, 3);
@@ -39,9 +44,8 @@ const Home = () => {
     };
 
     setHomePageListings();
-
-    console.log(storeListings);
-  }, [listings]);
+    setLoading(false);
+  }, [listings, location.pathname]);
 
   return (
     <div>
@@ -57,6 +61,7 @@ const Home = () => {
         <Searchbar />
         <div>
           <h3 className="text-center">EVENT</h3>
+          {loading && <p>Laddar event...</p>}
           <div className="container mx-auto flex justify-evenly min-h-52">
             {eventListings &&
               eventListings.map((listing) => (
@@ -70,6 +75,8 @@ const Home = () => {
         </div>
         <div>
           <h3 className="text-center">LOPPISAR</h3>
+          {loading && <p>Laddar loppisar...</p>}
+
           <div className="container mx-auto flex justify-evenly min-h-52">
             {marketListings &&
               marketListings.map((listing) => (
@@ -83,6 +90,8 @@ const Home = () => {
         </div>
         <div>
           <h3 className="text-center">MÄSSOR</h3>
+          {loading && <p>Laddar mässor...</p>}
+
           <div className="container mx-auto flex justify-evenly min-h-52">
             {conventionListings &&
               conventionListings.map((listing) => (
@@ -96,6 +105,8 @@ const Home = () => {
         </div>
         <div>
           <h3 className="text-center">BUTIKER</h3>
+          {loading && <p>Laddar butiker...</p>}
+
           <div className="container mx-auto flex justify-evenly min-h-52">
             {storeListings &&
               storeListings.map((listing) => (

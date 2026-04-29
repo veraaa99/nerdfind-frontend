@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import SaveListingButton from "./SaveListingButton";
 import { useEffect, useState } from "react";
 import axios from "@/api/axios";
+import { Badge } from "./ui/badge";
 
 type ListingProps = {
   listing: Listing;
@@ -14,14 +15,15 @@ const Listing = ({ listing }: ListingProps) => {
   const [host, setHost] = useState<User | null>(null);
 
   useEffect(() => {
-    const getUserByID = async (userId: string | User) => {
+    const getHostByID = async (userId: string | User) => {
       const res = await axios.get(`api/users/${userId}`);
 
       if (res.status !== 200) return;
 
       setHost(res.data);
     };
-    getUserByID(listing.host);
+
+    getHostByID(listing.host);
   }, []);
 
   return (
@@ -48,10 +50,45 @@ const Listing = ({ listing }: ListingProps) => {
         <div className="flex justify-between w-2xl">
           <div>
             <p>{listing.type}</p>
-            <p>{listing.location.city.split(",").slice(0, 4).join(" - ")}</p>
+            <p>{listing.location.address.split(",").slice(0, 4).join(" - ")}</p>
+            <p>{listing.location.city}</p>
 
             <h2>BESKRIVNING</h2>
             <p>{listing.description}</p>
+
+            <h3>KATEGORIER</h3>
+            <div className="flex items-center gap-2">
+              {listing.category.predefinedCategory &&
+                listing.category.predefinedCategory.map((category) => (
+                  <Badge
+                    key={category}
+                    variant="secondary"
+                    className="relative gap-2 rounded-sm px-3 py-1.5 bg-green-800 text-white"
+                  >
+                    <label
+                      htmlFor={category}
+                      className=" select-none after:absolute after:inset-0 "
+                    >
+                      {category}
+                    </label>
+                  </Badge>
+                ))}
+              {listing.category.customCategory &&
+                listing.category.customCategory.map((category) => (
+                  <Badge
+                    key={category}
+                    variant="secondary"
+                    className="relative gap-2 rounded-sm px-3 py-1.5 bg-green-800 text-white"
+                  >
+                    <label
+                      htmlFor={category}
+                      className=" select-none after:absolute after:inset-0 "
+                    >
+                      {category}
+                    </label>
+                  </Badge>
+                ))}
+            </div>
 
             {listing.date ? (
               <>
@@ -115,7 +152,7 @@ const Listing = ({ listing }: ListingProps) => {
       <MapContainer center={position} zoom={13} style={{ height: "300px" }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Marker position={position}>
-          <Popup>{listing.location.city}</Popup>
+          <Popup>{listing.location.address}</Popup>
         </Marker>
       </MapContainer>
 
