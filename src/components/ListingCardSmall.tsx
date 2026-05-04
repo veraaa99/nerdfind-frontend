@@ -22,7 +22,7 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
   }, []);
 
   return (
-    <div className="w-80 rounded-md overflow-hidden border-1 border-b-emerald-100 lg:w-90">
+    <div className="w-80 rounded-md overflow-hidden border border-b-emerald-100 lg:w-90">
       <Link to={`/listings/${listing._id}`}>
         <div>
           <img
@@ -31,8 +31,8 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
             alt={listing.images[0].url}
           />
         </div>
-        <div className="p-5">
-          <h3>{listing.title}</h3>
+        <div className="p-5 flex flex-col gap-1 font-light">
+          <h3 className="font-bold ">{listing.title}</h3>
           <h4>{listing.type}</h4>
           <p>{listing.location.address.split(",").slice(0, 1).join(" - ")}</p>
           <p>{listing.location.city}</p>
@@ -68,7 +68,10 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
                 </Badge>
               ))}
           </div>
-          <div>{host?.name}</div>
+          <div className="pt-2">
+            <p className="font-semibold text-md">ARRANGÖR: </p>
+            <p>{host?.name}</p>
+          </div>
         </div>
       </Link>
     </div>
