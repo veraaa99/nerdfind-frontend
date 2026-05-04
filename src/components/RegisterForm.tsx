@@ -77,9 +77,9 @@ const RegisterForm = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit, onError)}>
-        <div>
+        <div className="flex flex-col w-full gap-1 md:w-120">
           {/* NAME */}
-          <h3>NAMN</h3>
+          <h4>NAMN</h4>
           <input
             type="name"
             id="name"
@@ -119,7 +119,7 @@ const RegisterForm = () => {
             control={control}
             render={({ field: { value, onChange } }) => (
               <div>
-                <Badge variant="default">
+                <Badge variant="default" className="cursor-pointer">
                   <Checkbox
                     id="isHost"
                     checked={value}
@@ -137,7 +137,11 @@ const RegisterForm = () => {
 
           {/* REGISTER USER */}
           <div>
-            <button type="submit" className="cursor-pointer" disabled={loading}>
+            <button
+              type="submit"
+              className="cursor-pointer border rounded-lg p-3"
+              disabled={loading}
+            >
               {loading ? "SKAPAR KONTO..." : "SKAPA KONTO"}
             </button>
           </div>

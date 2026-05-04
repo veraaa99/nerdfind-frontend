@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <div>
+    <div className="self-end">
       <div className="container mx-auto px-10">
         <p className="text-center">
           Välkommen till Nerdfind Sverige! Utforska, hitta och spara annonser

@@ -6,18 +6,27 @@ const Login = () => {
   const { user } = useAuth();
 
   return (
-    <div>
+    <div className="mx-auto md:max-w-5xl p-10">
       {user ? (
         <>
-          <h1>SKAPA KONTO</h1>
+          <div className="h-50 flex justify-center align-center items-center">
+            <h1 className="text-center">SKAPA KONTO</h1>
+          </div>
+
           <RegisterForm />
         </>
       ) : (
         <>
-          <h1>LOGGA IN</h1>
-          <LoginForm />
-          <h2>HAR DU INGET KONTO ÄNNU? REGISTRERA DIG DIREKT!</h2>
-          <RegisterForm />
+          <div className="h-50 flex justify-center align-center items-center">
+            <h1 className="text-center">LOGGA IN</h1>
+          </div>
+          <div className="md:flex md:flex-col md:align-center md:items-center">
+            <LoginForm />
+            <h2 className="mt-10 mb-5 md:w-120">
+              HAR DU INGET KONTO ÄNNU? REGISTRERA DIG DIREKT!
+            </h2>
+            <RegisterForm />
+          </div>
         </>
       )}
     </div>

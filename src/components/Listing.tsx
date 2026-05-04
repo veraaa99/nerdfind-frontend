@@ -60,15 +60,6 @@ const Listing = ({ listing }: ListingProps) => {
           </div>
         </div>
 
-        {/* <div className="p-5 md:p-0">
-          <h1>{listing.title}</h1>
-
-          <h2>{listing.type}</h2>
-
-          <h3 className="pb-1 pt-5">STAD:</h3>
-          <p className="text-lg">{listing.location.city}</p>
-        </div> */}
-        {/* <hr className="divide-solid border-green-300 mt-3 mb-3" /> */}
         <div className="flex flex-col gap-10 p-5 md:flex-row md:justify-between md:gap-2 md:px-0">
           <div className="md:w-100">
             <h3 className="pb-1">BESKRIVNING</h3>

@@ -61,7 +61,7 @@ const LoginForm = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit, onError)}>
-        <div>
+        <div className="flex flex-col w-full gap-1 md:w-120">
           {/* EMAIL */}
           <h4>EMAIL</h4>
           <input
@@ -86,7 +86,11 @@ const LoginForm = () => {
 
           {/* LOGIN USER */}
           <div>
-            <button type="submit" className="cursor-pointer" disabled={loading}>
+            <button
+              type="submit"
+              className="cursor-pointer border rounded-lg p-3"
+              disabled={loading}
+            >
               {loading ? "LOGGAR IN..." : "LOGGA IN"}
             </button>
           </div>

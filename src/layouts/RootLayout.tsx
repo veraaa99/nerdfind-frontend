@@ -11,9 +11,9 @@ const RootLayout = () => {
   }
 
   return (
-    <div className="min-h-svh bg-emerald-950 text-emerald-500">
+    <div className="min-h-screen bg-emerald-950 text-emerald-500 flex flex-col">
       <Navbar />
-      <main>
+      <main className="grow">
         <Outlet />
       </main>
       <Footer />
