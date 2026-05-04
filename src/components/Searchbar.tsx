@@ -73,11 +73,11 @@ const Searchbar = () => {
   };
 
   return (
-    <div className="container mx-auto p-5">
+    <div className="container mx-auto p-5 md:w-xl">
       <input
         type="text"
         placeholder="Sök annons..."
-        className="bg-green-200 text-emerald-800 placeholder-emerald-500 mb-2 w-full py-1 pl-1 sm:w-xl md:w-lg"
+        className="bg-green-200 text-emerald-800 placeholder-emerald-500 mb-2 w-full py-1 pl-1 sm:w-xl md:w-xl"
         onChange={handleChange}
         value={textInput}
       />

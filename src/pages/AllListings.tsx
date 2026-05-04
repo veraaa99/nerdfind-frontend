@@ -9,8 +9,8 @@ const AllListings = () => {
       <h1 className="text-center">ALLA ANNONSER</h1>
 
       <div>
-        <h3 className="text-center">EVENT</h3>
-        <div className="container mx-auto flex justify-evenly min-h-52">
+        <h3 className="text-center pb-3 sm:pb-5">EVENT</h3>
+        <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto">
           {listings &&
             listings.map(
               (listing) =>
@@ -23,8 +23,9 @@ const AllListings = () => {
         </div>
       </div>
       <div>
-        <h3 className="text-center">LOPPISAR</h3>
-        <div className="container mx-auto flex justify-evenly min-h-52">
+        <h3 className="text-center pb-3 sm:pb-5">LOPPISAR</h3>
+
+        <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto">
           {listings &&
             listings.map(
               (listing) =>
@@ -37,8 +38,9 @@ const AllListings = () => {
         </div>
       </div>
       <div>
-        <h3 className="text-center">MÄSSOR</h3>
-        <div className="container mx-auto flex justify-evenly min-h-52">
+        <h3 className="text-center pb-3 sm:pb-5">MÄSSOR</h3>
+
+        <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto">
           {listings &&
             listings.map(
               (listing) =>
@@ -51,8 +53,8 @@ const AllListings = () => {
         </div>
       </div>
       <div>
-        <h3 className="text-center">BUTIKER</h3>
-        <div className="container mx-auto flex justify-evenly min-h-52">
+        <h3 className="text-center pb-3 sm:pb-5">BUTIKER</h3>
+        <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto">
           {listings &&
             listings.map(
               (listing) =>

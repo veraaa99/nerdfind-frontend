@@ -48,15 +48,15 @@ const Home = () => {
   }, [listings, location.pathname]);
 
   return (
-    <div className="container mx-auto md:max-w-5xl">
-      <div>
+    <div className="mx-auto">
+      <div className="h-80 flex flex-col justify-center text-center px-10 bg-[url('./assets/pexels-brentsingletonphoto-36398813.webp')] bg-cover bg-center bg-black/60 bg-blend-overlay sm:h-90">
         <h1 className="text-center">NERDFIND SVERIGE</h1>
         <h2 className="text-center">
           SVERIGES GEMENSAMMA PORTAL FÖR NÖRDEVENT, LOPPISAR, MÄSSOR OCH
           BUTIKER!
         </h2>
       </div>
-      <div>
+      <div className="py-10 md:max-w-5xl mx-auto ">
         <h2 className="text-center">Sök efter det du letar efter!</h2>
         <Searchbar />
         <div>
