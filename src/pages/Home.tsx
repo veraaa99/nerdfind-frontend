@@ -48,7 +48,7 @@ const Home = () => {
   }, [listings, location.pathname]);
 
   return (
-    <div>
+    <div className="container mx-auto md:max-w-5xl">
       <div>
         <h1 className="text-center">NERDFIND SVERIGE</h1>
         <h2 className="text-center">
@@ -60,9 +60,9 @@ const Home = () => {
         <h2 className="text-center">Sök efter det du letar efter!</h2>
         <Searchbar />
         <div>
-          <h3 className="text-center">EVENT</h3>
+          <h3 className="text-center pb-3 sm:pb-5">EVENT</h3>
           {loading && <p>Laddar event...</p>}
-          <div className="container mx-auto flex justify-evenly min-h-52">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto">
             {eventListings &&
               eventListings.map((listing) => (
                 <ListingCardSmall listing={listing} />
@@ -74,10 +74,10 @@ const Home = () => {
           </div>
         </div>
         <div>
-          <h3 className="text-center">LOPPISAR</h3>
+          <h3 className="text-center pb-3 sm:pb-5">LOPPISAR</h3>
           {loading && <p>Laddar loppisar...</p>}
 
-          <div className="container mx-auto flex justify-evenly min-h-52">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto">
             {marketListings &&
               marketListings.map((listing) => (
                 <ListingCardSmall listing={listing} />
@@ -89,10 +89,10 @@ const Home = () => {
           </div>
         </div>
         <div>
-          <h3 className="text-center">MÄSSOR</h3>
+          <h3 className="text-center pb-3 sm:pb-5">MÄSSOR</h3>
           {loading && <p>Laddar mässor...</p>}
 
-          <div className="container mx-auto flex justify-evenly min-h-52">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto">
             {conventionListings &&
               conventionListings.map((listing) => (
                 <ListingCardSmall listing={listing} />
@@ -104,10 +104,10 @@ const Home = () => {
           </div>
         </div>
         <div>
-          <h3 className="text-center">BUTIKER</h3>
+          <h3 className="text-center pb-3 sm:pb-5">BUTIKER</h3>
           {loading && <p>Laddar butiker...</p>}
 
-          <div className="container mx-auto flex justify-evenly min-h-52">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto">
             {storeListings &&
               storeListings.map((listing) => (
                 <ListingCardSmall listing={listing} />

@@ -73,22 +73,22 @@ const Searchbar = () => {
   };
 
   return (
-    <div className="container mx-auto ">
+    <div className="container mx-auto p-5">
       <input
         type="text"
         placeholder="Sök annons..."
-        className="bg-green-300 text-emerald- placeholder-emerald-500"
+        className="bg-green-200 text-emerald-800 placeholder-emerald-500 mb-2 w-full py-1 pl-1 sm:w-xl md:w-lg"
         onChange={handleChange}
         value={textInput}
       />
 
-      <p>TYP AV ANNONS</p>
-      <div className="flex items-center gap-2">
+      <p className="mt-2 mb-1">TYP AV ANNONS</p>
+      <div className="flex items-center gap-2 mb-5">
         {types.map((type) => (
           <Badge
             key={type}
             variant="secondary"
-            className="relative gap-2 rounded-sm px-3 py-1.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
+            className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
           >
             <Checkbox
               id={type}
@@ -112,13 +112,13 @@ const Searchbar = () => {
         ))}
       </div>
 
-      <p>KATEGORI</p>
-      <div className="flex items-center gap-2">
+      <p className="mt-2 mb-1">KATEGORI</p>
+      <div className="flex items-center gap-2 flex-wrap mb-5">
         {categories.map((label) => (
           <Badge
             key={label}
             variant="secondary"
-            className="relative gap-2 rounded-sm px-3 py-1.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
+            className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
           >
             <Checkbox
               id={label}
@@ -142,13 +142,13 @@ const Searchbar = () => {
         ))}
       </div>
 
-      <p>PLATS (STAD/ORT)</p>
-      <div className="flex items-center gap-2">
+      <p className="mt-2 mb-1">PLATS (STAD/ORT)</p>
+      <div className="flex items-center gap-2 flex-wrap mb-5">
         {uniqueLocation.map((location) => (
           <Badge
             key={location}
             variant="secondary"
-            className="relative gap-2 rounded-sm px-3 py-1.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
+            className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
           >
             <Checkbox
               id={location}
@@ -172,9 +172,9 @@ const Searchbar = () => {
         ))}
       </div>
 
-      <div>
+      <div className="mt-3">
         <button
-          className="p-2 px-3 rounded-md cursor-pointer bg-green-500 text-black hover:bg-green-800 hover:text-white"
+          className="p-2 px-5 rounded-md cursor-pointer bg-green-500 text-black hover:bg-green-800 hover:text-white"
           onClick={handleSearch}
         >
           SÖK

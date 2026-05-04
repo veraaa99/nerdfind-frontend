@@ -22,11 +22,11 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
   }, []);
 
   return (
-    <div className="w-60 rounded-md overflow-hidden">
+    <div className="w-80 rounded-md overflow-hidden border-1 border-b-emerald-100 lg:w-90">
       <Link to={`/listings/${listing._id}`}>
         <div>
           <img
-            className="object-cover h-45 w-60 rounded-t-md rounded-r-md"
+            className="object-cover h-45 w-80 rounded-t-md rounded-r-md lg:w-90 lg:h-70"
             src={listing.images[0].url}
             alt={listing.images[0].url}
           />
@@ -42,7 +42,7 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
                 <Badge
                   key={category}
                   variant="secondary"
-                  className="relative gap-2 rounded-sm px-3 py-1.5 bg-green-800 text-white"
+                  className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 bg-green-800 text-white"
                 >
                   <label
                     htmlFor={category}
@@ -57,7 +57,7 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
                 <Badge
                   key={category}
                   variant="secondary"
-                  className="relative gap-2 rounded-sm px-3 py-1.5 bg-green-800 text-white"
+                  className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 bg-green-800 text-white"
                 >
                   <label
                     htmlFor={category}

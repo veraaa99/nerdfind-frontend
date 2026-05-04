@@ -69,8 +69,6 @@ type Listing = {
   date?: Date;
   openingHours: OpeningHours[];
   location: {
-    // address: string;
-    // TODO: FIX ADRESS AND CITY SEPARATELY
     address: string;
     city: string;
     type: "Point";
