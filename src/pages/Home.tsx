@@ -56,13 +56,13 @@ const Home = () => {
           BUTIKER!
         </h2>
       </div>
-      <div className="py-10 md:max-w-5xl mx-auto ">
+      <div className="py-10 lg:max-w-5xl mx-auto ">
         <h2 className="text-center">Sök efter det du letar efter!</h2>
         <Searchbar />
         <div>
           <h3 className="text-center pb-3 sm:pb-5">EVENT</h3>
           {loading && <p>Laddar event...</p>}
-          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto sm:flex-wrap">
             {eventListings &&
               eventListings.map((listing) => (
                 <ListingCardSmall listing={listing} />
@@ -77,7 +77,7 @@ const Home = () => {
           <h3 className="text-center pb-3 sm:pb-5">LOPPISAR</h3>
           {loading && <p>Laddar loppisar...</p>}
 
-          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto sm:flex-wrap">
             {marketListings &&
               marketListings.map((listing) => (
                 <ListingCardSmall listing={listing} />
@@ -92,7 +92,7 @@ const Home = () => {
           <h3 className="text-center pb-3 sm:pb-5">MÄSSOR</h3>
           {loading && <p>Laddar mässor...</p>}
 
-          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto sm:flex-wrap">
             {conventionListings &&
               conventionListings.map((listing) => (
                 <ListingCardSmall listing={listing} />
@@ -107,7 +107,7 @@ const Home = () => {
           <h3 className="text-center pb-3 sm:pb-5">BUTIKER</h3>
           {loading && <p>Laddar butiker...</p>}
 
-          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto sm:flex-wrap">
             {storeListings &&
               storeListings.map((listing) => (
                 <ListingCardSmall listing={listing} />
