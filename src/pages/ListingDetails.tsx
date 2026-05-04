@@ -9,7 +9,7 @@ const ListingDetails = () => {
   const listing = listings?.find((listing) => listing._id == listingId);
 
   return (
-    <div className="mx-auto md:max-w-4xl">
+    <div className="mx-auto md:max-w-5xl">
       {listing && <Listing listing={listing} />}
     </div>
   );

@@ -22,17 +22,20 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
   }, []);
 
   return (
-    <div className="w-80 rounded-md overflow-hidden border border-b-emerald-100 lg:w-90">
+    <div className="w-80 rounded-md overflow-hidden border border-b-emerald-100">
       <Link to={`/listings/${listing._id}`}>
-        <div>
-          <img
-            className="object-cover h-45 w-80 rounded-t-md rounded-r-md lg:w-90 lg:h-70"
+        <div
+          className="p-5 flex flex-col justify-end h-50 w-80 rounded-t-md rounded-r-md lg:w-90 lg:h-70 bg-cover bg-center bg-black/60 bg-blend-overlay"
+          style={{ backgroundImage: `url(${listing.images[0].url})` }}
+        >
+          {/* <img
+            className="object-cover h-50 w-80 rounded-t-md rounded-r-md lg:w-90 lg:h-70"
             src={listing.images[0].url}
             alt={listing.images[0].url}
-          />
+          /> */}
+          <h3 className="font-bold ">{listing.title}</h3>
         </div>
         <div className="p-5 flex flex-col gap-1 font-light">
-          <h3 className="font-bold ">{listing.title}</h3>
           <h4>{listing.type}</h4>
           <p>{listing.location.address.split(",").slice(0, 1).join(" - ")}</p>
           <p>{listing.location.city}</p>

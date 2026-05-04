@@ -70,30 +70,26 @@ const SaveListingButton = ({ listing }: SaveListingProps) => {
       {currentUser == null ? (
         <button
           type="button"
-          className="flex gap-2 text-left items-start w-full"
+          className="flex gap-2 text-left items-start w-full text-gray-400 md:pr-5"
         >
-          <img src={Bookmark} alt="" className="w-6 sm:pt-1" />
+          <img src={Bookmark} alt="" className="w-6" />
           LOGGA IN FÖR ATT SPARA EN ANNONS{" "}
         </button>
       ) : currentUser && currentUser._id == listing.host ? (
         <button
           type="button"
-          className="flex gap-2 text-left items-start w-full"
+          className="flex gap-2 text-left items-start w-full text-gray-400 md:pr-5"
         >
-          <img src={Bookmark} alt="" className="w-6 sm:pt-1" />
+          <img src={Bookmark} alt="" className="w-6" />
           DET GÅR INTE ATT SPARA DINA EGNA ANNONSER{" "}
         </button>
       ) : (
         <button
           type="button"
-          className="flex gap-2 cursor-pointer text-left items-start w-full"
+          className="flex gap-2 cursor-pointer text-left items-start w-full md:pr-5"
           onClick={handleSaveListing}
         >
-          <img
-            src={saved ? SavedBookmark : Bookmark}
-            alt=""
-            className="w-6 sm:pt-1"
-          />
+          <img src={saved ? SavedBookmark : Bookmark} alt="" className="w-6" />
           {saved ? "TA BORT" : "SPARA"}
         </button>
       )}
