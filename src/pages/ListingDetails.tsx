@@ -8,6 +8,10 @@ const ListingDetails = () => {
   const listingId = useParams().id;
   const listing = listings?.find((listing) => listing._id == listingId);
 
-  return <div>{listing && <Listing listing={listing} />}</div>;
+  return (
+    <div className="mx-auto md:max-w-4xl">
+      {listing && <Listing listing={listing} />}
+    </div>
+  );
 };
 export default ListingDetails;

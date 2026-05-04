@@ -143,6 +143,10 @@
     font-size: 1.2em;
     font-weight: 300;
   }
+
+  p {
+    font-weight: 300;
+  }
 }
 
 /* Tailwind: sm */

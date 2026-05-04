@@ -73,7 +73,7 @@ const Searchbar = () => {
   };
 
   return (
-    <div className="container mx-auto p-5 md:w-2xl lg:w-xl">
+    <div className=" mx-auto p-5 md:w-2xl lg:w-xl">
       <input
         type="text"
         placeholder="Sök annons..."
