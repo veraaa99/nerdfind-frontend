@@ -162,6 +162,19 @@
     border-width: 1px;
     border-radius: var(--radius-sm);
   }
+
+  .modal {
+    transform: translateX(100%);
+    transition: transform 300ms ease-in-out;
+  }
+
+  .ReactModal__Content--after-open {
+    transform: translateX(0);
+  }
+
+  .ReactModal__Content--before-close {
+    transform: translateX(100%);
+  }
 }
 
 /* Tailwind: sm */

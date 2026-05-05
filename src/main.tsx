@@ -15,6 +15,9 @@ import AllListings from "./pages/AllListings";
 import ListingDetails from "./pages/ListingDetails";
 import SearchResult from "./pages/SearchResult";
 import ListingContextProvider from "./contexts/listingContext";
+import Modal from "react-modal";
+
+Modal.setAppElement("#root");
 
 const router = createBrowserRouter([
   {
