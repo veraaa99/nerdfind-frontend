@@ -82,7 +82,7 @@ const RegisterForm = () => {
       >
         <div>
           {/* NAME */}
-          <h4>NAMN</h4>
+          <h4 className="mb-2">NAMN</h4>
           <input
             type="name"
             id="name"
@@ -90,7 +90,7 @@ const RegisterForm = () => {
           />
           {errors.name && <p>Vänligen fyll i ett namn</p>}
           {/* EMAIL */}
-          <h4>EMAIL</h4>
+          <h4 className="mb-2 mt-3">EMAIL</h4>
           <input
             type="email"
             id="email"
@@ -98,7 +98,7 @@ const RegisterForm = () => {
           />
           {errors.email && <p>Vänligen fyll i en epostadress</p>}
           {/* PASSWORD */}
-          <h4>LÖSENORD (MINST 10 TECKEN)</h4>
+          <h4 className="mb-2 mt-3">LÖSENORD (MINST 10 TECKEN)</h4>
           <input
             type="password"
             id="password"
@@ -107,7 +107,7 @@ const RegisterForm = () => {
           {errors.password && <p>Vänligen fyll i ett lösenord</p>}
 
           {/* CONFIRM PASSWORD */}
-          <h4>UPPREPA LÖSENORD</h4>
+          <h4 className="mb-2 mt-3">UPPREPA LÖSENORD</h4>
           <input
             type="password"
             id="confirmPassword"
@@ -116,16 +116,20 @@ const RegisterForm = () => {
           {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
 
           {/* IS HOST */}
-          <h4>ÄR DETTA ETT FÖRETAGSKONTO?</h4>
+          <h4 className="mb-2 mt-7">ÄR DETTA ETT FÖRETAGSKONTO?</h4>
           <Controller
             name="isHost"
             control={control}
             render={({ field: { value, onChange } }) => (
               <div>
-                <Badge variant="default" className="cursor-pointer">
+                <Badge
+                  variant="default"
+                  className="cursor-pointer bg-green-200 text-black relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
+                >
                   <Checkbox
                     id="isHost"
                     checked={value}
+                    className={"border-emerald-900"}
                     onCheckedChange={(checked) => onChange(checked === true)}
                   />
                   <label htmlFor="isHost">Detta är ett företagskonto</label>
@@ -142,7 +146,7 @@ const RegisterForm = () => {
           <div>
             <button
               type="submit"
-              className="cursor-pointer border rounded-lg p-3"
+              className="mt-10 p-2 px-5 rounded-md cursor-pointer border-2 border-emerald-500 w-full bg-green-800 text-white hover:bg-green-500/60 hover:border-emerald-700  transition duration-300 ease-in-out;"
               disabled={loading}
             >
               {loading ? "SKAPAR KONTO..." : "SKAPA KONTO"}

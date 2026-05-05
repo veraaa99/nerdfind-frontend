@@ -1,3 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -46,6 +50,8 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --default-font-family: var(--font-nunito);
 }
 
 :root {
@@ -81,6 +87,10 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --font-nunito: "Nunito", "sans-serif";
+  --font-archivo: "Archivo Black", "sans-serif";
+  --font-poppins: "Poppins", "sans-serif";
 }
 
 .dark {
@@ -115,6 +125,10 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  --font-nunito: "Nunito", "sans-serif";
+  --font-archivo: "Archivo Black", "sans-serif";
+  --font-poppins: "Poppins", "sans-serif";
 }
 
 @layer base {
@@ -132,26 +146,46 @@
 
   h1 {
     font-size: 1.9em;
-    font-weight: 600;
+    font-weight: 300;
+
+    font-family: var(--font-archivo);
   }
 
   h2 {
-    font-size: 1.3em;
-    font-weight: 300;
+    font-size: 1.4em;
+    font-weight: 700;
+
+    font-family: var(--font-nunito);
   }
 
   h3 {
-    font-size: 1.2em;
-    font-weight: 300;
+    font-size: 1.3em;
+    font-weight: 400;
+
+    font-family: var(--font-poppins);
+  }
+
+  h4 {
+    font-size: 1em;
+    font-weight: 500;
+
+    font-family: var(--font-poppins);
   }
 
   p {
     font-weight: 300;
+    font-family: var(--font-nunito);
+    color: #a4f4cf;
+  }
+
+  button {
+    font-weight: 400;
+    font-family: var(--font-nunito);
   }
 
   input {
-    background-color: oklch(92.5% 0.084 155.995);
-    color: oklch(43.2% 0.095 166.913);
+    background-color: oklch(92.578% 0.08442 155.922 / 0.129);
+    color: #a4f4cf;
     margin-bottom: calc(var(--spacing) * 2);
     width: 100%;
 
@@ -161,6 +195,7 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
     border-radius: var(--radius-sm);
+    border-color: #a4f4cf81;
   }
 
   .modal {
@@ -174,6 +209,127 @@
 
   .ReactModal__Content--before-close {
     transform: translateX(100%);
+  }
+
+  .nunito-basicfont {
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  .archivo-black-regular {
+    font-family: "Archivo Black", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .poppins-thin {
+    font-family: "Poppins", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+  }
+
+  .poppins-extralight {
+    font-family: "Poppins", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+  }
+
+  .poppins-light {
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  .poppins-regular {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .poppins-medium {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  .poppins-semibold {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  .poppins-bold {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .poppins-extrabold {
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+  }
+
+  .poppins-black {
+    font-family: "Poppins", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+  }
+
+  .poppins-thin-italic {
+    font-family: "Poppins", sans-serif;
+    font-weight: 100;
+    font-style: italic;
+  }
+
+  .poppins-extralight-italic {
+    font-family: "Poppins", sans-serif;
+    font-weight: 200;
+    font-style: italic;
+  }
+
+  .poppins-light-italic {
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  .poppins-regular-italic {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .poppins-medium-italic {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .poppins-semibold-italic {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  .poppins-bold-italic {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  .poppins-extrabold-italic {
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
+    font-style: italic;
+  }
+
+  .poppins-black-italic {
+    font-family: "Poppins", sans-serif;
+    font-weight: 900;
+    font-style: italic;
   }
 }
 

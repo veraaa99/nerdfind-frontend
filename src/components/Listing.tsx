@@ -27,10 +27,10 @@ const Listing = ({ listing }: ListingProps) => {
   }, []);
 
   return (
-    <div className="pt-10 mx-auto flex flex-col justify-center md:p-10 ">
-      <hr className="divide-solid border-green-300 mt-8 md:mb-5" />
+    <div className=" mx-auto flex flex-col justify-center md:p-10 md:max-w-260">
+      <hr className="divide-solid border-green-300 mt-5 md:mb-5" />
       <div className="p-5 md:p-0">
-        <h1>{listing.title}</h1>
+        <h1 className="text-shadow-lg/50">{listing.title}</h1>
 
         <h2>{listing.type}</h2>
 
@@ -40,11 +40,11 @@ const Listing = ({ listing }: ListingProps) => {
 
       <div>
         <div>
-          <div className="w-full md:mt-5">
+          <div className="w-full md:mt-5 md:shadow-xl md:max-w-260 ">
             <img
               src={listing.images[0].url}
               alt={listing.images[0].alt}
-              className="w-full aspect-4/3 object-cover md:rounded-lg md:w-200"
+              className="w-full aspect-4/3 object-cover md:rounded-lg md:aspect-video"
             />
           </div>
 
@@ -53,7 +53,7 @@ const Listing = ({ listing }: ListingProps) => {
               <div key={index} className="relative">
                 <img
                   src={img.url}
-                  className="w-40 aspect-4/3 object-cover rounded-lg sm:w-55 lg:w-65"
+                  className="shadow-lg w-40 aspect-4/3 object-cover rounded-lg sm:w-55 lg:w-65"
                 />
               </div>
             ))}
@@ -72,7 +72,7 @@ const Listing = ({ listing }: ListingProps) => {
                   <Badge
                     key={category}
                     variant="secondary"
-                    className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 bg-green-800 text-white"
+                    className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 bg-emerald-400 text-black"
                   >
                     <label
                       htmlFor={category}
@@ -87,7 +87,7 @@ const Listing = ({ listing }: ListingProps) => {
                   <Badge
                     key={category}
                     variant="secondary"
-                    className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 bg-green-800 text-white"
+                    className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 bg-emerald-400 text-black"
                   >
                     <label
                       htmlFor={category}
@@ -103,7 +103,7 @@ const Listing = ({ listing }: ListingProps) => {
               <>
                 <h3 className="pt-5 pb-2">TIDER & DATUM</h3>
                 <div className=" flex flex-col gap-5">
-                  <div className="p-3 border rounded-lg flex flex-row justify-between">
+                  <div className="p-3 border border-green-300 rounded-lg flex flex-row justify-between">
                     <p>
                       {new Date(listing.date).toLocaleDateString("sv-SE", {
                         weekday: "long",
@@ -123,7 +123,7 @@ const Listing = ({ listing }: ListingProps) => {
                     </p>
                   </div>
 
-                  <div className="p-3 border rounded-lg">
+                  <div className="p-3 border border-green-300 rounded-lg">
                     {listing.openingHours.map((day) =>
                       day.times.start == "STÄNGT" ? (
                         <div className="flex flex-row justify-between">
@@ -146,7 +146,7 @@ const Listing = ({ listing }: ListingProps) => {
               <>
                 <h3 className="pt-5 pb-2">TIDER</h3>
 
-                <div className="p-3 border rounded-lg">
+                <div className="p-3 border border-green-300 rounded-lg">
                   {listing.openingHours.map((day) =>
                     day.times.start == "STÄNGT" ? (
                       <div className="flex flex-row justify-between">
@@ -166,7 +166,7 @@ const Listing = ({ listing }: ListingProps) => {
               </>
             )}
           </div>
-          <div>
+          <div className="flex justify-end md:w-100">
             <SaveListingButton listing={listing} />
           </div>
         </div>
@@ -201,7 +201,7 @@ const Listing = ({ listing }: ListingProps) => {
             <>
               <h4 className="font-semibold pb-2 pt-7">HEMSIDA:</h4>{" "}
               <a
-                className="underline font-extralight break-all"
+                className="text-emerald-300 underline font-extralight break-all hover:text-emerald-500 transition duration-300"
                 href={listing.website}
                 target="_blank"
               >

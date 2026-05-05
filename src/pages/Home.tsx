@@ -50,18 +50,21 @@ const Home = () => {
   return (
     <div className="mx-auto">
       <div className="h-80 flex flex-col justify-center text-center px-10 bg-[url('./assets/pexels-brentsingletonphoto-36398813.webp')] bg-cover bg-center bg-black/60 bg-blend-overlay sm:h-90">
-        <h1 className="text-center">NERDFIND SVERIGE</h1>
-        <h2 className="text-center">
+        <h1 className="text-center text-shadow-lg/50">NERDFIND SVERIGE</h1>
+        <h2 className="text-center text-shadow-lg/50">
           SVERIGES GEMENSAMMA PORTAL FÖR NÖRDEVENT, LOPPISAR, MÄSSOR OCH
           BUTIKER!
         </h2>
       </div>
       <div className="py-10 lg:max-w-5xl mx-auto ">
-        <h2 className="text-center">Sök efter det du letar efter!</h2>
+        <h3 className="text-center">Sök efter annonser i hela landet!</h3>
         <Searchbar />
-        <div>
+
+        <hr className="divide-solid border-green-300 mt-8 md:mb-5" />
+
+        <div className="mt-10">
           <h3 className="text-center pb-3 sm:pb-5">EVENT</h3>
-          {loading && <p>Laddar event...</p>}
+          {loading && <p className="text-shadow-lg/50">Laddar event...</p>}
           <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto sm:flex-wrap">
             {eventListings &&
               eventListings.map((listing) => (
@@ -69,13 +72,15 @@ const Home = () => {
               ))}
             {eventListings == undefined ||
               (eventListings.length == 0 && (
-                <p>Inga event pågår just nu. Kom tillbaka senare!</p>
+                <p className="text-shadow-lg/50">
+                  Inga event pågår just nu. Kom tillbaka senare!
+                </p>
               ))}
           </div>
         </div>
         <div>
           <h3 className="text-center pb-3 sm:pb-5">LOPPISAR</h3>
-          {loading && <p>Laddar loppisar...</p>}
+          {loading && <p className="text-shadow-lg/50">Laddar loppisar...</p>}
 
           <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto sm:flex-wrap">
             {marketListings &&
@@ -84,13 +89,15 @@ const Home = () => {
               ))}
             {marketListings == undefined ||
               (marketListings.length == 0 && (
-                <p>Inga loppisar pågår just nu. Kom tillbaka senare!</p>
+                <p className="text-shadow-lg/50">
+                  Inga loppisar pågår just nu. Kom tillbaka senare!
+                </p>
               ))}
           </div>
         </div>
         <div>
           <h3 className="text-center pb-3 sm:pb-5">MÄSSOR</h3>
-          {loading && <p>Laddar mässor...</p>}
+          {loading && <p className="text-shadow-lg/50">Laddar mässor...</p>}
 
           <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto sm:flex-wrap">
             {conventionListings &&
@@ -99,13 +106,15 @@ const Home = () => {
               ))}
             {conventionListings == undefined ||
               (conventionListings.length == 0 && (
-                <p>Inga mässor pågår just nu. Kom tillbaka senare!</p>
+                <p className="text-shadow-lg/50">
+                  Inga mässor pågår just nu. Kom tillbaka senare!
+                </p>
               ))}
           </div>
         </div>
         <div>
           <h3 className="text-center pb-3 sm:pb-5">BUTIKER</h3>
-          {loading && <p>Laddar butiker...</p>}
+          {loading && <p className="text-shadow-lg/50">Laddar butiker...</p>}
 
           <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-evenly sm:mx-auto sm:flex-wrap">
             {storeListings &&
@@ -114,7 +123,7 @@ const Home = () => {
               ))}
             {storeListings == undefined ||
               (storeListings.length == 0 && (
-                <p>
+                <p className="text-shadow-lg/50">
                   Inga butiker finns tillgängliga just nu. Kom tillbaka senare!
                 </p>
               ))}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Badge } from "./ui/badge";
 import { Checkbox } from "./ui/checkbox";
 import { useNavigate, useSearchParams } from "react-router";
@@ -20,6 +20,7 @@ const Searchbar = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { listings } = useListing();
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   const [textInput, setTextInput] = useState<string>();
 
@@ -79,15 +80,20 @@ const Searchbar = () => {
         placeholder="Sök annons..."
         onChange={handleChange}
         value={textInput}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            buttonRef.current?.click();
+          }
+        }}
       />
 
-      <p className="mt-2 mb-1">TYP AV ANNONS</p>
+      <h4 className="mt-2 mb-1">TYP AV ANNONS</h4>
       <div className="flex items-center gap-2 mb-5">
         {types.map((type) => (
           <Badge
             key={type}
             variant="secondary"
-            className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
+            className="bg-green-200 relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
           >
             <Checkbox
               id={type}
@@ -111,13 +117,13 @@ const Searchbar = () => {
         ))}
       </div>
 
-      <p className="mt-2 mb-1">KATEGORI</p>
+      <h4 className="mt-2 mb-1">KATEGORI</h4>
       <div className="flex items-center gap-2 flex-wrap mb-5">
         {categories.map((label) => (
           <Badge
             key={label}
             variant="secondary"
-            className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
+            className="bg-green-200 relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
           >
             <Checkbox
               id={label}
@@ -141,13 +147,13 @@ const Searchbar = () => {
         ))}
       </div>
 
-      <p className="mt-2 mb-1">PLATS (STAD/ORT)</p>
+      <h4 className="mt-2 mb-1">PLATS (STAD/ORT)</h4>
       <div className="flex items-center gap-2 flex-wrap mb-5">
         {uniqueLocation.map((location) => (
           <Badge
             key={location}
             variant="secondary"
-            className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
+            className="bg-green-200 relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
           >
             <Checkbox
               id={location}
@@ -173,7 +179,8 @@ const Searchbar = () => {
 
       <div className="mt-3">
         <button
-          className="p-2 px-5 rounded-md cursor-pointer bg-green-500 text-black hover:bg-green-800 hover:text-white"
+          ref={buttonRef}
+          className="p-2 px-5 rounded-md cursor-pointer border-2 border-emerald-500 w-full bg-green-800 text-white hover:bg-green-500/60 hover:border-emerald-700  transition duration-300 ease-in-out;"
           onClick={handleSearch}
         >
           SÖK

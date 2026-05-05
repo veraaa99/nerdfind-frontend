@@ -22,18 +22,17 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
   }, []);
 
   return (
-    <div className="w-80 rounded-md overflow-hidden border border-b-emerald-100">
+    <div className="group relative w-80 rounded-md overflow-hidden border border-emerald-500 bg-emerald-950 text-emerald-400 shadow-xl/30 hover:text-emerald-200 transition transform hover:-translate-y-1 duration-500">
+      <div className="absolute inset-0 bg-white opacity-5 group-hover:opacity-10 transition pointer-events-none duration-500" />
+
       <Link to={`/listings/${listing._id}`}>
         <div
-          className="p-5 flex flex-col justify-end h-50 w-80 rounded-t-md rounded-r-md lg:w-90 lg:h-70 bg-cover bg-center bg-black/60 bg-blend-overlay"
+          className="relative z-10 p-5 flex flex-col justify-end h-50 w-80 rounded-t-md rounded-r-md lg:w-90 lg:h-70 bg-cover bg-center bg-black/60 bg-blend-overlay group-hover:bg-black/20 transition duration-500"
           style={{ backgroundImage: `url(${listing.images[0].url})` }}
         >
-          {/* <img
-            className="object-cover h-50 w-80 rounded-t-md rounded-r-md lg:w-90 lg:h-70"
-            src={listing.images[0].url}
-            alt={listing.images[0].url}
-          /> */}
-          <h3 className="font-bold ">{listing.title}</h3>
+          <h3 className="font-bold text-shadow-lg/50 group-hover:text-shadow-2xl">
+            {listing.title}
+          </h3>
         </div>
         <div className="p-5 flex flex-col gap-1 font-light">
           <h4>{listing.type}</h4>
@@ -45,7 +44,7 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
                 <Badge
                   key={category}
                   variant="secondary"
-                  className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 bg-green-800 text-white"
+                  className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 bg-emerald-400 text-black group-hover:bg-green-300 duration-500"
                 >
                   <label
                     htmlFor={category}
@@ -60,7 +59,7 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
                 <Badge
                   key={category}
                   variant="secondary"
-                  className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 bg-green-800 text-white"
+                  className="relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 bg-emerald-400 text-black group-hover:bg-green-300 duration-500"
                 >
                   <label
                     htmlFor={category}
@@ -72,7 +71,7 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
               ))}
           </div>
           <div className="pt-2">
-            <p className="font-semibold text-md">ARRANGÖR: </p>
+            <h4 className="font-semibold text-md">ARRANGÖR: </h4>
             <p>{host?.name}</p>
           </div>
         </div>

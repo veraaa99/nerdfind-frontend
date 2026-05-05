@@ -2,10 +2,10 @@ import axios from "@/api/axios";
 import ListingCardSmall from "@/components/ListingCardSmall";
 import { useAuth } from "@/contexts/authContext";
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 
 const Profile = () => {
-  const { user, token } = useAuth();
+  const { user, token, actions } = useAuth();
 
   const [userProfile, setUserProfile] = useState<User | null>(null);
   const [savedListings, setSavedListings] = useState<Listing[]>([]);
@@ -13,6 +13,7 @@ const Profile = () => {
 
   const [loading, setLoading] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -68,15 +69,22 @@ const Profile = () => {
     fetchAllData();
   }, [user, token, location.key]);
 
+  const handleLogout = () => {
+    actions.logoutUser();
+    navigate("/", { replace: true });
+  };
+
   return (
     <div className="mx-auto md:max-w-6xl p-10">
       {userProfile && (
         <>
           <div className="h-50 flex flex-col justify-center align-center items-center md:items-start">
-            <h1>PROFIL</h1>
+            <h1 className="text-shadow-lg/50">PROFIL</h1>
             {loading && <p>Laddar användare...</p>}
             <h2>Välkommen {userProfile.name}!</h2>
           </div>
+
+          <hr className="divide-solid border-green-300 mt-8 md:mb-5" />
 
           <div>
             <h3 className="mb-4 text-center md:text-left">SPARADE ANNONSER</h3>
@@ -100,6 +108,8 @@ const Profile = () => {
               </div>
             )}
           </div>
+
+          <hr className="divide-solid border-green-300 mt-8 md:mb-5" />
 
           {userProfile.isHost && (
             <>
@@ -128,13 +138,13 @@ const Profile = () => {
                 )}
               </div>
 
-              <div className="flex flex-col gap-2 border rounded-md p-8 mt-7 items-center md:items-start">
+              <div className="flex flex-col gap-2 border border-emerald-500 rounded-md p-8 mt-7 items-center md:items-start">
                 <h3 className="text-center md:text-left">
                   Vill du skapa en ny annons till ditt event, din butik eller
                   loppis? Gör det här!
                 </h3>
                 <NavLink
-                  className="w-50 cursor-pointer relative gap-2 text-center rounded-sm py-2 bg-white text-black hover:bg-green-800 hover:text-white"
+                  className="p-2 pl-5 rounded-md cursor-pointer border-2 border-emerald-500 w-50 bg-green-800 text-white hover:bg-green-500/60 hover:border-emerald-700  transition duration-300 ease-in-out;"
                   to="/host/createListing"
                 >
                   {" "}
@@ -143,6 +153,15 @@ const Profile = () => {
               </div>
             </>
           )}
+
+          <div className="flex flex-col gap-2 py-5 mt-7 items-center md:items-start">
+            <a
+              className="w-full text-center p-3 rounded-md cursor-pointer border-2 border-red-900 sm:w-40 bg-red-500/80 hover:bg-red-500 text-white transition duration-300 ease-in-out;"
+              onClick={handleLogout}
+            >
+              LOGGA UT
+            </a>
+          </div>
         </>
       )}
     </div>

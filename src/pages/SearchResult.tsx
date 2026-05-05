@@ -42,7 +42,9 @@ const SearchResult = () => {
   return (
     <div>
       <div className="container mx-auto h-80 flex flex-col justify-center sm:px-10">
-        <h1 className="text-center sm:text-left">SÖKRESULTAT</h1>
+        <h1 className="text-shadow-lg/50 text-center sm:text-left">
+          SÖKRESULTAT
+        </h1>
       </div>
 
       {loading && <p>Söker efter annonser...</p>}

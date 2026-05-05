@@ -63,13 +63,10 @@ const LoginForm = () => {
 
   return (
     <div>
-      <form
-        // className="md:flex md:justify-center"
-        onSubmit={handleSubmit(onSubmit, onError)}
-      >
+      <form onSubmit={handleSubmit(onSubmit, onError)}>
         <div>
           {/* EMAIL */}
-          <h4>EMAIL</h4>
+          <h4 className="mb-2">EMAIL</h4>
           <input
             type="email"
             id="email"
@@ -78,7 +75,7 @@ const LoginForm = () => {
           {errors.email && <p>Vänligen fyll i en epostadress</p>}
 
           {/* PASSWORD */}
-          <h4>LÖSENORD</h4>
+          <h4 className="mb-2 mt-3">LÖSENORD</h4>
           <input
             type="password"
             id="password"
@@ -94,7 +91,7 @@ const LoginForm = () => {
           <div>
             <button
               type="submit"
-              className="cursor-pointer border rounded-lg p-3"
+              className="mt-7 p-2 px-5 rounded-md cursor-pointer border-2 border-emerald-500 w-full bg-green-800 text-white hover:bg-green-500/60 hover:border-emerald-700  transition duration-300 ease-in-out;"
               disabled={loading}
             >
               {loading ? "LOGGAR IN..." : "LOGGA IN"}

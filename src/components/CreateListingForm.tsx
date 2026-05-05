@@ -19,6 +19,7 @@ import {
 import { useListing } from "@/contexts/listingContext";
 import { NavLink } from "react-router";
 import axios from "@/api/axios";
+import { cn } from "@/lib/utils";
 
 //  IMAGEKIT
 const imagekit = new ImageKit({
@@ -137,7 +138,7 @@ const CreateListingForm = () => {
     name: "openingHours",
   });
 
-  const selectedDays = openingHoursFieldArray.fields.map((f) => f.day);
+  const openingHours = watch("openingHours");
 
   const hours = Array.from({ length: 24 }, (_, i) => {
     const h = String(i).padStart(2, "0");
@@ -230,7 +231,7 @@ const CreateListingForm = () => {
         onSubmit={handleSubmit(onSubmit, onError)}
       >
         <div
-          className="flex flex-col w-full gap-2 md:w-160 
+          className="flex flex-col w-full gap-2 md:w-170 
         "
         >
           {/* TITLE */}
@@ -258,37 +259,93 @@ const CreateListingForm = () => {
             name="type"
             control={control}
             render={({ field }) => (
-              <RadioGroup value={field.value} onChange={field.onChange}>
+              <RadioGroup
+                value={field.value}
+                onValueChange={field.onChange}
+                className="sm:w-100"
+              >
                 <FieldLabel htmlFor="event">
-                  <Field orientation="horizontal">
+                  <Field
+                    onClick={() => field.onChange("Event")}
+                    orientation="horizontal"
+                    className={cn(
+                      "flex items-center justify-between border rounded-md p-3 cursor-pointer",
+                      field.value === "Event"
+                        ? "bg-green-800 border-emerald-500 text-white"
+                        : "bg-green-200 border-emerald-500 text-black",
+                    )}
+                  >
                     <FieldContent>
                       <FieldTitle>EVENT</FieldTitle>
                     </FieldContent>
-                    <RadioGroupItem value="Event" id="Event" />
+                    <RadioGroupItem
+                      value="Event"
+                      id="Event"
+                      className="hidden"
+                    />
                   </Field>
                 </FieldLabel>
                 <FieldLabel htmlFor="butik">
-                  <Field orientation="horizontal">
+                  <Field
+                    onClick={() => field.onChange("Butik")}
+                    orientation="horizontal"
+                    className={cn(
+                      "flex items-center justify-between border rounded-md p-3 cursor-pointer",
+                      field.value === "Butik"
+                        ? "bg-green-800 border-emerald-500 text-white"
+                        : "bg-green-200 border-emerald-500 text-black",
+                    )}
+                  >
                     <FieldContent>
                       <FieldTitle>BUTIK</FieldTitle>
                     </FieldContent>
-                    <RadioGroupItem value="Butik" id="Butik" />
+                    <RadioGroupItem
+                      value="Butik"
+                      id="Butik"
+                      className="hidden"
+                    />
                   </Field>
                 </FieldLabel>
                 <FieldLabel htmlFor="loppis">
-                  <Field orientation="horizontal">
+                  <Field
+                    onClick={() => field.onChange("Loppis")}
+                    orientation="horizontal"
+                    className={cn(
+                      "flex items-center justify-between border rounded-md p-3 cursor-pointer",
+                      field.value === "Loppis"
+                        ? "bg-green-800 border-emerald-500 text-white"
+                        : "bg-green-200 border-emerald-500 text-black",
+                    )}
+                  >
                     <FieldContent>
                       <FieldTitle>LOPPIS</FieldTitle>
                     </FieldContent>
-                    <RadioGroupItem value="Loppis" id="Loppis" />
+                    <RadioGroupItem
+                      value="Loppis"
+                      id="Loppis"
+                      className="hidden"
+                    />
                   </Field>
                 </FieldLabel>
                 <FieldLabel htmlFor="massa">
-                  <Field orientation="horizontal">
+                  <Field
+                    onClick={() => field.onChange("Mässa")}
+                    orientation="horizontal"
+                    className={cn(
+                      "flex items-center justify-between border rounded-md p-3 cursor-pointer",
+                      field.value === "Mässa"
+                        ? "bg-green-800 border-emerald-500 text-white"
+                        : "bg-green-200 border-emerald-500 text-black",
+                    )}
+                  >
                     <FieldContent>
                       <FieldTitle>MÄSSA</FieldTitle>
                     </FieldContent>
-                    <RadioGroupItem value="Mässa" id="Mässa" />
+                    <RadioGroupItem
+                      value="Mässa"
+                      id="Mässa"
+                      className="hidden"
+                    />
                   </Field>
                 </FieldLabel>
               </RadioGroup>
@@ -311,7 +368,7 @@ const CreateListingForm = () => {
                   <Badge
                     key={label}
                     variant="secondary"
-                    className="relative gap-2 rounded-sm px-3 py-1.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
+                    className="bg-green-200 relative gap-2 rounded-sm px-4 py-4 text-sm sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 has-[input:checked]:bg-green-800 has-[input:checked]:text-white"
                   >
                     <Checkbox
                       id={label}
@@ -346,14 +403,21 @@ const CreateListingForm = () => {
             render={({ field: { onChange } }) => (
               <>
                 {customCategories.map((category) => (
-                  <Badge key={category}>
+                  <Badge
+                    key={category}
+                    className="bg-green-200 relative gap-2 rounded-sm px-4 py-4 text-sm text-black sm:px-3 sm:py-4 md:text-sm md:px-4 md:py-3.5 "
+                  >
                     {category}
-                    <button onClick={() => onChange(removeCategory(category))}>
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => onChange(removeCategory(category))}
+                    >
                       X
                     </button>
                   </Badge>
                 ))}
                 <Input
+                  className="w-full mb-2 px-2 py-2 rounded-sm bg-[oklch(92.578%_0.08442_155.922/0.129)] text-[#a4f4cf] border border-[#a4f4cf81]"
                   value={categoryInput}
                   onChange={(e) => setCategoryInput(e.target.value)}
                   onKeyDown={(e) => {
@@ -440,7 +504,7 @@ const CreateListingForm = () => {
               <Calendar
                 mode="single"
                 captionLayout="dropdown"
-                className="rounded-lg border"
+                className="rounded-lg border border-emerald-500"
                 selected={value}
                 onSelect={onChange}
               />
@@ -449,7 +513,7 @@ const CreateListingForm = () => {
 
           {/* OPENING HOURS */}
           <h3 className="mt-2">TIDER</h3>
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5 ">
             {openingHoursFieldArray.fields.map((field, index) => {
               const startValue = watch(`openingHours.${index}.times.start`);
               const isClosed = startValue === "STÄNGT";
@@ -457,18 +521,21 @@ const CreateListingForm = () => {
               return (
                 <div
                   key={field.id}
-                  className="flex flex-col gap-3 items-start border rounded-sm flex-wrap p-3 md:flex-row md:p-5 md:items-center"
+                  className="bg-[oklch(92.578%_0.08442_155.922/0.129)] text-[#a4f4cf] flex flex-col gap-3 items-start border rounded-sm  border-emerald-500 flex-wrap p-3 md:flex-row md:p-5 md:items-center"
                 >
                   {/* DAY */}
                   <select
-                    className="border rounded-sm p-3 w-full sm:w-130 md:w-50"
+                    className="border rounded-sm cursor-pointer  border-emerald-500 p-3 w-full sm:w-130 md:w-50"
                     {...register(`openingHours.${index}.day` as const)}
                   >
                     {weekDays.map((day) => (
                       <option
                         key={day}
                         value={day}
-                        disabled={selectedDays.includes(day)}
+                        disabled={openingHours?.some(
+                          (h, i) => h?.day === day && i !== index,
+                        )}
+                        className="cursor-pointer text-emerald-600 bg-emerald-950 disabled:text-gray-600"
                       >
                         {day}
                       </option>
@@ -476,7 +543,7 @@ const CreateListingForm = () => {
                   </select>
 
                   {/* STÄNGT */}
-                  <label className="cursor-pointer flex gap-3 border rounded-sm items-center p-3 w-50 sm:w-90 md:w-30 md:p-4">
+                  <label className="cursor-pointer flex gap-3 border rounded-sm border-emerald-500 items-center p-3 w-50 sm:w-90 md:w-30 md:p-4">
                     <input
                       type="checkbox"
                       className="cursor-pointer h-4 w-4 m-0 relative top-px accent-green-800 "
@@ -497,13 +564,17 @@ const CreateListingForm = () => {
 
                   {/* START */}
                   <select
-                    className="cursor-pointer border rounded-sm p-2 w-70 sm:w-90 md:w-30 md:p-3"
+                    className="cursor-pointer border rounded-sm border-emerald-500 disabled:border-gray-400 disabled:text-gray-400 disabled:cursor-default p-2 w-70 sm:w-90 md:w-30 md:p-3"
                     disabled={isClosed}
                     {...register(`openingHours.${index}.times.start` as const)}
                   >
                     <option value="">Start</option>
                     {hours.map((h) => (
-                      <option key={h} value={h}>
+                      <option
+                        key={h}
+                        value={h}
+                        className="cursor-pointer text-emerald-600 bg-emerald-950 disabled:text-gray-300"
+                      >
                         {h}
                       </option>
                     ))}
@@ -511,7 +582,7 @@ const CreateListingForm = () => {
 
                   {/* END */}
                   <select
-                    className="cursor-pointer border rounded-sm p-2 disabled:text-gray-400 w-70 sm:w-90 md:w-30 md:p-3"
+                    className="cursor-pointer border rounded-sm p-2 border-emerald-500 disabled:border-gray-400 disabled:text-gray-400 disabled:cursor-default w-70 sm:w-90 md:w-30 md:p-3"
                     disabled={isClosed || !startValue}
                     {...register(`openingHours.${index}.times.end` as const)}
                   >
@@ -523,7 +594,11 @@ const CreateListingForm = () => {
                         return h > startValue;
                       })
                       .map((h) => (
-                        <option key={h} value={h}>
+                        <option
+                          key={h}
+                          value={h}
+                          className="cursor-pointer text-emerald-600 bg-emerald-950 disabled:text-gray-300"
+                        >
                           {h}
                         </option>
                       ))}
@@ -531,7 +606,7 @@ const CreateListingForm = () => {
 
                   {/* TA BORT */}
                   <button
-                    className="cursor-pointer border rounded-md p-3 bg-orange-800 text-white w-50 sm:w-70 md:w-50 "
+                    className="cursor-pointer rounded-md  p-3 w-50 sm:w-70 md:w-50 border-2 border-red-900  bg-red-500/60 hover:bg-red-500/90 text-white transition duration-300 ease-in-out;"
                     type="button"
                     onClick={() => openingHoursFieldArray.remove(index)}
                   >
@@ -546,7 +621,8 @@ const CreateListingForm = () => {
 
             {/* LÄGG TILL ÖPPETTIDER */}
             <button
-              className="border cursor-pointer rounded-sm p-3 bg-green-800 text-white"
+              className="cursor-pointer relative gap-2 rounded-sm border border-green-300 px-4 py-4 
+               sm:px-3 sm:py-4 md:px-4 md:py-3.5 bg-emerald-600 text-white hover:bg-emerald-400 hover:text-black duration-300"
               type="button"
               onClick={() =>
                 openingHoursFieldArray.append({
@@ -598,7 +674,7 @@ const CreateListingForm = () => {
           <div>
             <button
               type="submit"
-              className="w-50 cursor-pointer relative gap-2 text-center rounded-sm py-2 bg-white text-black hover:bg-green-800 hover:text-white"
+              className="mt-7 p-2 px-5 rounded-md cursor-pointer border-2 border-emerald-500 w-full bg-green-800 text-white hover:bg-green-500/60 hover:border-emerald-700  transition duration-300 ease-in-out;"
               disabled={loading || isSubmitted}
             >
               {loading
@@ -615,14 +691,14 @@ const CreateListingForm = () => {
                 <p>Annonsen har skapats!</p>
                 <div>
                   <NavLink
-                    className="w-50 cursor-pointer relative gap-2 text-center rounded-sm py-2 bg-white text-black hover:bg-green-800 hover:text-white"
+                    className="mt-7 p-2 px-5 rounded-md cursor-pointer border-2 border-emerald-500 w-full bg-green-800 text-white hover:bg-green-500/60 hover:border-emerald-700  transition duration-300 ease-in-out;"
                     to="/profile"
                   >
                     {" "}
                     TILL DINA ANNONSER{" "}
                   </NavLink>
                   <NavLink
-                    className="w-50 cursor-pointer relative gap-2 text-center rounded-sm py-2 bg-white text-black hover:bg-green-800 hover:text-white"
+                    className="mt-7 p-2 px-5 rounded-md cursor-pointer border-2 border-emerald-500 w-full bg-green-800 text-white hover:bg-green-500/60 hover:border-emerald-700  transition duration-300 ease-in-out;"
                     to="/"
                   >
                     {" "}

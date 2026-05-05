@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import Bookmark from "../assets/bokmärke.svg";
-import SavedBookmark from "../assets/bokmärke-ifylld.svg";
 import { useAuth } from "@/contexts/authContext";
 import axios from "@/api/axios";
+
+import DisabledBookmark from "../assets/bokmärke.svg";
+import Bookmark from "../assets/ny-bokmärke.svg";
+import SavedBookmark from "../assets/ny-bokmärke-ifylld.svg";
 
 type SaveListingProps = {
   listing: Listing;
@@ -70,23 +72,23 @@ const SaveListingButton = ({ listing }: SaveListingProps) => {
       {currentUser == null ? (
         <button
           type="button"
-          className="flex gap-2 text-left items-start w-full text-gray-400 md:pr-5"
+          className="flex gap-2 text-left items-start w-full text-gray-400 "
         >
-          <img src={Bookmark} alt="" className="w-6" />
+          <img src={DisabledBookmark} alt="" className="w-6" />
           LOGGA IN FÖR ATT SPARA EN ANNONS{" "}
         </button>
       ) : currentUser && currentUser._id == listing.host ? (
         <button
           type="button"
-          className="flex gap-2 text-left items-start w-full text-gray-400 md:pr-5"
+          className="flex gap-2 text-left items-start w-full text-gray-400"
         >
-          <img src={Bookmark} alt="" className="w-6" />
+          <img src={DisabledBookmark} alt="" className="w-6" />
           DET GÅR INTE ATT SPARA DINA EGNA ANNONSER{" "}
         </button>
       ) : (
         <button
           type="button"
-          className="flex gap-2 cursor-pointer text-left items-start w-full md:pr-5"
+          className="flex gap-2 cursor-pointer items-start w-30 ml-auto"
           onClick={handleSaveListing}
         >
           <img src={saved ? SavedBookmark : Bookmark} alt="" className="w-6" />
