@@ -1,9 +1,16 @@
 import CreateListingForm from "@/components/CreateListingForm";
+import { useEffect } from "react";
 
 const CreateListing = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div>
-      <h1>SKAPA ANNONS</h1>
+    <div className="mx-auto md:max-w-5xl p-10 ">
+      <div className="h-50 flex justify-center align-center items-center">
+        <h1>SKAPA ANNONS</h1>
+      </div>
       <CreateListingForm />
     </div>
   );

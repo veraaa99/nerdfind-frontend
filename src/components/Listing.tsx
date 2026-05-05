@@ -44,7 +44,7 @@ const Listing = ({ listing }: ListingProps) => {
             <img
               src={listing.images[0].url}
               alt={listing.images[0].alt}
-              className="w-full aspect-4/3 object-cover md:rounded-lg"
+              className="w-full aspect-4/3 object-cover md:rounded-lg md:w-200"
             />
           </div>
 
@@ -103,14 +103,16 @@ const Listing = ({ listing }: ListingProps) => {
               <>
                 <h3 className="pt-5 pb-2">TIDER & DATUM</h3>
                 <div className=" flex flex-col gap-5">
-                  <div className="p-3 border rounded-lg">
+                  <div className="p-3 border rounded-lg flex flex-row justify-between">
                     <p>
                       {new Date(listing.date).toLocaleDateString("sv-SE", {
                         weekday: "long",
                         day: "numeric",
                         year: "numeric",
                         month: "long",
-                      })}{" "}
+                      })}
+                    </p>
+                    <p>
                       (
                       {new Date(listing.date).getFullYear() +
                         "-" +
@@ -121,20 +123,20 @@ const Listing = ({ listing }: ListingProps) => {
                     </p>
                   </div>
 
-                  <div className="p-3 border rounded-lg flex flex-row justify-between">
+                  <div className="p-3 border rounded-lg">
                     {listing.openingHours.map((day) =>
                       day.times.start == "STÄNGT" ? (
-                        <>
+                        <div className="flex flex-row justify-between">
                           <p>{day.day}:</p>
                           <p>{day.times.start}</p>
-                        </>
+                        </div>
                       ) : (
-                        <>
+                        <div className="flex flex-row justify-between">
                           <p>{day.day}:</p>
                           <p>
                             {day.times.start} - {day.times.end}
                           </p>
-                        </>
+                        </div>
                       ),
                     )}
                   </div>
@@ -144,20 +146,20 @@ const Listing = ({ listing }: ListingProps) => {
               <>
                 <h3 className="pt-5 pb-2">TIDER</h3>
 
-                <div className="p-3 border rounded-lg flex flex-row justify-between">
+                <div className="p-3 border rounded-lg">
                   {listing.openingHours.map((day) =>
                     day.times.start == "STÄNGT" ? (
-                      <>
+                      <div className="flex flex-row justify-between">
                         <p>{day.day}:</p>
                         <p>{day.times.start}</p>
-                      </>
+                      </div>
                     ) : (
-                      <>
+                      <div className="flex flex-row justify-between">
                         <p>{day.day}:</p>
                         <p>
                           {day.times.start} - {day.times.end}
                         </p>
-                      </>
+                      </div>
                     ),
                   )}
                 </div>

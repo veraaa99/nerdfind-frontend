@@ -76,8 +76,11 @@ const RegisterForm = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
-        <div className="flex flex-col w-full gap-1 md:w-120">
+      <form
+        // className="md:flex md:justify-center"
+        onSubmit={handleSubmit(onSubmit, onError)}
+      >
+        <div>
           {/* NAME */}
           <h4>NAMN</h4>
           <input

@@ -1,9 +1,8 @@
 import axios from "@/api/axios";
-import Listing from "@/components/Listing";
 import ListingCardSmall from "@/components/ListingCardSmall";
 import { useAuth } from "@/contexts/authContext";
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useLocation } from "react-router";
 
 const Profile = () => {
   const { user, token } = useAuth();
@@ -13,86 +12,90 @@ const Profile = () => {
   const [userCreatedListings, setUserCreatedListings] = useState<Listing[]>([]);
 
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
-    const getUserById = async () => {
+    const fetchAllData = async () => {
       if (!user) return;
 
       setLoading(true);
 
       try {
-        const res = await axios.get(`/api/users/${user}`, {
+        // getUserByID:
+        const userRes = await axios.get(`/api/users/${user}`, {
           headers: {
             authorization: `Bearer ${token}`,
           },
         });
 
-        if (res.status !== 200) return;
-        setUserProfile(res.data);
-        return;
+        if (userRes.status !== 200) return;
+
+        const userData = userRes.data;
+        setUserProfile(userData);
+
+        // findCreatedListings:
+        if (userData.isHost) {
+          const createdRes = await axios.get("api/listings/createdListings", {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (createdRes.status == 200) {
+            setUserCreatedListings(createdRes.data);
+          }
+        }
+
+        // findSavedListings
+        if (userData.savedListings?.length) {
+          const savedRes = await axios.get("api/listings/savedlistings", {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (savedRes.status == 200) {
+            setSavedListings(savedRes.data);
+          }
+        }
       } catch (error: any) {
         console.log(error.response.data);
-
-        return;
+      } finally {
+        setLoading(false);
       }
     };
 
-    const findCreatedListings = async () => {
-      if (!userProfile?.isHost) return;
-
-      const res = await axios.get("api/listings/createdListings", {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (res.status !== 200) return;
-
-      setUserCreatedListings(res.data);
-    };
-
-    const findSavedListings = async () => {
-      if (!userProfile?.savedListings?.length) return;
-
-      const res = await axios.get("api/listings/savedlistings", {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (res.status !== 200) return;
-
-      setSavedListings(res.data);
-    };
-
-    getUserById();
-    findCreatedListings();
-    findSavedListings();
-    setLoading(false);
-  }, [userProfile]);
+    fetchAllData();
+  }, [user, token, location.key]);
 
   return (
-    <div>
+    <div className="mx-auto md:max-w-6xl p-10">
       {userProfile && (
         <>
-          <div>
+          <div className="h-50 flex flex-col justify-center align-center items-center md:items-start">
             <h1>PROFIL</h1>
             {loading && <p>Laddar användare...</p>}
             <h2>Välkommen {userProfile.name}!</h2>
           </div>
 
           <div>
-            <h3>SPARADE ANNONSER</h3>
-            {loading && <p>Laddar sparade annonser...</p>}
+            <h3 className="mb-4 text-center md:text-left">SPARADE ANNONSER</h3>
+            {loading && (
+              <p className="text-center md:text-left">
+                Laddar sparade annonser...
+              </p>
+            )}
 
             {savedListings.length == 0 ? (
               <div>
-                <p>Du har inga sparade annonser just nu.</p>
+                <p className="text-center md:text-left">
+                  Du har inga sparade annonser just nu.
+                </p>
               </div>
             ) : (
-              <div>
+              <div className="flex items-center align-center justify-center flex-wrap gap-10 md:justify-start md:items-start">
                 {savedListings.map((listing) => (
-                  <Listing key={listing._id} listing={listing} />
+                  <ListingCardSmall key={listing._id} listing={listing} />
                 ))}
               </div>
             )}
@@ -100,23 +103,33 @@ const Profile = () => {
 
           {userProfile.isHost && (
             <>
-              <h3>SKAPADE ANNONSER</h3>
-              {loading && <p>Laddar skapade annonser...</p>}
-
-              {userCreatedListings.length == 0 ? (
-                <div>
-                  <p>Du har inte skapat några annonser än.</p>
-                </div>
-              ) : (
-                <div>
-                  {userCreatedListings.map((listing) => (
-                    <ListingCardSmall key={listing._id} listing={listing} />
-                  ))}
-                </div>
+              <h3 className="my-4 text-center md:text-left">
+                SKAPADE ANNONSER
+              </h3>
+              {loading && (
+                <p className="text-center md:text-left">
+                  Laddar skapade annonser...
+                </p>
               )}
 
-              <div className="flex flex-col gap-2">
-                <h3>
+              <div>
+                {userCreatedListings.length == 0 ? (
+                  <div>
+                    <p className="text-center md:text-left">
+                      Du har inte skapat några annonser än.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex items-center align-center justify-center flex-wrap gap-10 md:justify-start md:items-start">
+                    {userCreatedListings.map((listing) => (
+                      <ListingCardSmall key={listing._id} listing={listing} />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-2 border rounded-md p-8 mt-7 items-center md:items-start">
+                <h3 className="text-center md:text-left">
                   Vill du skapa en ny annons till ditt event, din butik eller
                   loppis? Gör det här!
                 </h3>

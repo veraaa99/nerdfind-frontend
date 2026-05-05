@@ -225,8 +225,14 @@ const CreateListingForm = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
-        <div>
+      <form
+        className="md:flex md:justify-center"
+        onSubmit={handleSubmit(onSubmit, onError)}
+      >
+        <div
+          className="flex flex-col w-full gap-2 md:w-160 
+        "
+        >
           {/* TITLE */}
           <h3>TITEL</h3>
           <input
@@ -237,8 +243,9 @@ const CreateListingForm = () => {
           {errors.title && <p>Vänligen fyll i en titel</p>}
 
           {/* DESCRIPTION */}
-          <h4>BESKRIVNING</h4>
+          <h3>BESKRIVNING</h3>
           <input
+            className="mb-2"
             type="description"
             id="description"
             {...register("description", { required: true })}
@@ -246,7 +253,7 @@ const CreateListingForm = () => {
           {errors.description && <p>Vänligen fyll i en beskrivning</p>}
 
           {/* TYPE */}
-          <h4>TYP AV ANNONS</h4>
+          <h3>TYP AV ANNONS</h3>
           <Controller
             name="type"
             control={control}
@@ -292,14 +299,14 @@ const CreateListingForm = () => {
           )}
 
           {/* CATEGORY */}
-          <h4>KATEGORI</h4>
+          <h3 className="mt-2">KATEGORI</h3>
 
           {/* PREDEFINED CATEGORY */}
           <Controller
             name="category.predefinedCategory"
             control={control}
             render={({ field: { onChange } }) => (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 {categories.map((label) => (
                   <Badge
                     key={label}
@@ -332,7 +339,7 @@ const CreateListingForm = () => {
           />
 
           {/* CUSTOM CATEGORY */}
-          <h4>(VALFRITT) EGEN KATEGORI: </h4>
+          <h3 className="mt-2">(VALFRITT) EGEN KATEGORI: </h3>
           <Controller
             name="category.customCategory"
             control={control}
@@ -363,7 +370,7 @@ const CreateListingForm = () => {
           {errors.category && <p>Vänligen välj minst en kategori</p>}
 
           {/* IMAGES */}
-          <h4>BILDER</h4>
+          <h3 className="mt-2">BILDER</h3>
 
           <Controller
             name="images"
@@ -425,7 +432,7 @@ const CreateListingForm = () => {
           )}
 
           {/* DATE */}
-          <h4>(VALFRITT) DATUM</h4>
+          <h3 className="mt-2">(VALFRITT) DATUM</h3>
           <Controller
             name="date"
             control={control}
@@ -441,16 +448,22 @@ const CreateListingForm = () => {
           />
 
           {/* OPENING HOURS */}
-          <h4>TIDER</h4>
-          <div className="space-y-4">
+          <h3 className="mt-2">TIDER</h3>
+          <div className="flex flex-col gap-5">
             {openingHoursFieldArray.fields.map((field, index) => {
               const startValue = watch(`openingHours.${index}.times.start`);
               const isClosed = startValue === "STÄNGT";
 
               return (
-                <div key={field.id} className="flex gap-3 items-center">
+                <div
+                  key={field.id}
+                  className="flex flex-col gap-3 items-start border rounded-sm flex-wrap p-3 md:flex-row md:p-5 md:items-center"
+                >
                   {/* DAY */}
-                  <select {...register(`openingHours.${index}.day` as const)}>
+                  <select
+                    className="border rounded-sm p-3 w-full sm:w-130 md:w-50"
+                    {...register(`openingHours.${index}.day` as const)}
+                  >
                     {weekDays.map((day) => (
                       <option
                         key={day}
@@ -463,9 +476,10 @@ const CreateListingForm = () => {
                   </select>
 
                   {/* STÄNGT */}
-                  <label>
+                  <label className="cursor-pointer flex gap-3 border rounded-sm items-center p-3 w-50 sm:w-90 md:w-30 md:p-4">
                     <input
                       type="checkbox"
+                      className="cursor-pointer h-4 w-4 m-0 relative top-px accent-green-800 "
                       onChange={(e) => {
                         if (e.target.checked) {
                           setValue(
@@ -478,11 +492,12 @@ const CreateListingForm = () => {
                         }
                       }}
                     />
-                    STÄNGT
+                    <span className="leading-none">STÄNGT</span>
                   </label>
 
                   {/* START */}
                   <select
+                    className="cursor-pointer border rounded-sm p-2 w-70 sm:w-90 md:w-30 md:p-3"
                     disabled={isClosed}
                     {...register(`openingHours.${index}.times.start` as const)}
                   >
@@ -496,6 +511,7 @@ const CreateListingForm = () => {
 
                   {/* END */}
                   <select
+                    className="cursor-pointer border rounded-sm p-2 disabled:text-gray-400 w-70 sm:w-90 md:w-30 md:p-3"
                     disabled={isClosed || !startValue}
                     {...register(`openingHours.${index}.times.end` as const)}
                   >
@@ -515,10 +531,11 @@ const CreateListingForm = () => {
 
                   {/* TA BORT */}
                   <button
+                    className="cursor-pointer border rounded-md p-3 bg-orange-800 text-white w-50 sm:w-70 md:w-50 "
                     type="button"
-                    onClick={() => openingHoursFieldArray.remove()}
+                    onClick={() => openingHoursFieldArray.remove(index)}
                   >
-                    - Ta bort öppettider
+                    — Ta bort öppettider
                   </button>
                 </div>
               );
@@ -529,6 +546,7 @@ const CreateListingForm = () => {
 
             {/* LÄGG TILL ÖPPETTIDER */}
             <button
+              className="border cursor-pointer rounded-sm p-3 bg-green-800 text-white"
               type="button"
               onClick={() =>
                 openingHoursFieldArray.append({
@@ -545,7 +563,7 @@ const CreateListingForm = () => {
           </div>
 
           {/* LOCATION */}
-          <h4>PLATS</h4>
+          <h3 className="mt-2">PLATS</h3>
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -569,7 +587,7 @@ const CreateListingForm = () => {
           {errors.location && <p>Vänligen välj en adress</p>}
 
           {/* WEBSITE */}
-          <h4>(VALFRITT) LÄNK TILL HEMSIDA</h4>
+          <h3 className="mt-2">(VALFRITT) LÄNK TILL HEMSIDA</h3>
           <input type="website" id="website" {...register("website")} />
 
           <div>

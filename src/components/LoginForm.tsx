@@ -3,11 +3,14 @@ import { loginFormSchema, type LoginUserInputs } from "@/schemas/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const LoginForm = () => {
   const { actions } = useAuth();
+
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const [formError, setFormError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -54,14 +57,17 @@ const LoginForm = () => {
     setFormError("");
     reset({ email: "", password: "" });
     setLoading(false);
-    navigate("/", { replace: true });
+    navigate(from, { replace: true });
     return;
   }
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
-        <div className="flex flex-col w-full gap-1 md:w-120">
+      <form
+        // className="md:flex md:justify-center"
+        onSubmit={handleSubmit(onSubmit, onError)}
+      >
+        <div>
           {/* EMAIL */}
           <h4>EMAIL</h4>
           <input

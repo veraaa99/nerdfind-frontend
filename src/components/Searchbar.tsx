@@ -77,7 +77,6 @@ const Searchbar = () => {
       <input
         type="text"
         placeholder="Sök annons..."
-        className="bg-green-200 text-emerald-800 placeholder-emerald-500 mb-2 w-full py-1 pl-1 sm:w-xl md:w-2xl lg:w-xl"
         onChange={handleChange}
         value={textInput}
       />
