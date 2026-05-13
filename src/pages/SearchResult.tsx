@@ -49,7 +49,7 @@ const SearchResult = () => {
 
       {loading && <p>Söker efter annonser...</p>}
       <div className="container flex flex-col gap-10 items-center sm:items-start pb-15 sm:flex-row sm:mx-auto sm:flex-wrap sm:px-10">
-        {searchResult !== null && searchResult.length > 0 && !loading
+        {searchResult !== null && searchResult.length > 0
           ? searchResult.map((listing) => (
               <ListingCardSmall listing={listing} />
             ))
