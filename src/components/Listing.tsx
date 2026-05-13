@@ -4,6 +4,7 @@ import SaveListingButton from "./SaveListingButton";
 import { useEffect, useState } from "react";
 import axios from "@/api/axios";
 import { Badge } from "./ui/badge";
+import imageError from "../assets/bild-error.svg";
 
 type ListingProps = {
   listing: Listing;
@@ -44,6 +45,9 @@ const Listing = ({ listing }: ListingProps) => {
             <img
               src={listing.images[0].url}
               alt={listing.images[0].alt}
+              onError={(e) => {
+                e.currentTarget.src = imageError;
+              }}
               className="w-full aspect-4/3 object-cover md:rounded-lg md:aspect-video"
             />
           </div>
@@ -54,6 +58,9 @@ const Listing = ({ listing }: ListingProps) => {
                 <img
                   src={img.url}
                   className="shadow-lg w-40 aspect-4/3 object-cover rounded-lg sm:w-55 lg:w-65"
+                  onError={(e) => {
+                    e.currentTarget.src = imageError;
+                  }}
                 />
               </div>
             ))}

@@ -54,7 +54,9 @@ const ListingContextProvider = ({ children }: PropsWithChildren) => {
         },
       });
 
-      if (res.status !== 201) return;
+      if (res.status === 201) {
+        setListings((prev) => (prev ? [res.data, ...prev] : [res.data]));
+      }
 
       return;
     } catch (error: any) {

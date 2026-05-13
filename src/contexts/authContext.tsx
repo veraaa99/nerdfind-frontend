@@ -46,7 +46,10 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     const checkToken = async () => {
       try {
         const userToken: string | null = sessionStorage.getItem("jwt");
-        if (!userToken) return;
+        if (!userToken) {
+          setIsAuthChecked(true);
+          return;
+        }
 
         const res = await axios.get("api/users/check", {
           headers: {
@@ -57,9 +60,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
         if (res.status === 200) {
           setToken(sessionStorage.getItem("jwt"));
           setUser(res.data._id);
-          if (res.data.isHost) {
-            setIsHost(true);
-          }
+          setIsHost(res.data.isHost);
         }
       } catch (error: any) {
         console.log(error.response.data);
@@ -82,12 +83,12 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
       if (res.status !== 201) return;
 
+      console.log(res.data.isHost);
+
       setToken(res.data.userToken);
       setUser(res.data._id);
       sessionStorage.setItem("jwt", res.data.userToken);
-      if (res.data.isHost) {
-        setIsHost(true);
-      }
+      setIsHost(res.data.isHost);
       return;
     } catch (error: any) {
       console.log(error.response.data);
@@ -103,12 +104,13 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
       if (res.status !== 200) return;
 
+      console.log(res.data);
+
       setToken(res.data.userToken);
       setUser(res.data._id);
       sessionStorage.setItem("jwt", res.data.userToken);
-      if (res.data.isHost) {
-        setIsHost(true);
-      }
+      setIsHost(res.data.isHost);
+
       return;
     } catch (error: any) {
       console.log(error.response.data);

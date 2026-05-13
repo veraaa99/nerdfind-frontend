@@ -55,6 +55,8 @@ const CreateListingForm = () => {
     formState: { errors },
     watch,
     setValue,
+    setError,
+    clearErrors,
   } = useForm<CreateListingInputs>({
     resolver: zodResolver(createListingSchema),
     defaultValues: {
@@ -118,6 +120,14 @@ const CreateListingForm = () => {
   // IMAGES - UPLOAD
   async function uploadImage(file: File) {
     const { data: auth } = await axios.get("/api/imagekit-auth");
+
+    if (file.size > 5 * 1024 * 1024) {
+      throw new Error("Bilden är för stor");
+    }
+
+    if (!file.type.startsWith("image/")) {
+      throw new Error("Ogiltig filtyp");
+    }
 
     const result = await imagekit.upload({
       file,
@@ -446,11 +456,35 @@ const CreateListingForm = () => {
                   <input
                     type="file"
                     multiple
-                    accept="image/*"
+                    accept=".jpg,.jpeg,.png,.webp"
                     onChange={(e) => {
                       const files = Array.from(e.target.files || []);
 
-                      const mapped = files.map((file) => ({
+                      clearErrors("images");
+
+                      const validFiles = files.filter((file) => {
+                        if (!file.type.startsWith("image/")) {
+                          setError("images", {
+                            type: "manual",
+                            message: "Endast bildfiler är tillåtna",
+                          });
+
+                          return false;
+                        }
+
+                        if (file.size > 5 * 1024 * 1024) {
+                          setError("images", {
+                            type: "manual",
+                            message: "En eller flera bilder är större än 5MB",
+                          });
+
+                          return false;
+                        }
+
+                        return true;
+                      });
+
+                      const mapped = validFiles.map((file) => ({
                         file,
                         preview: URL.createObjectURL(file),
                       }));
@@ -491,9 +525,7 @@ const CreateListingForm = () => {
               );
             }}
           />
-          {errors.images && (
-            <p>Vänligen lägg till minst en bild till din annons</p>
-          )}
+          {errors.images && <p>{errors.images.message}</p>}
 
           {/* DATE */}
           <h3 className="mt-2">(VALFRITT) DATUM</h3>
@@ -688,17 +720,17 @@ const CreateListingForm = () => {
           <div>
             {isSubmitted && (
               <>
-                <p>Annonsen har skapats!</p>
-                <div>
+                <p className="pt-10 pb-5">Annonsen har skapats!</p>
+                <div className="flex gap-5">
                   <NavLink
-                    className="mt-7 p-2 px-5 rounded-md cursor-pointer border-2 border-emerald-500 w-full bg-green-800 text-white hover:bg-green-500/60 hover:border-emerald-700  transition duration-300 ease-in-out;"
+                    className="text-center mt-7 p-2 px-5 rounded-md cursor-pointer border-2 border-emerald-500 w-full bg-green-800 text-white hover:bg-green-500/60 hover:border-emerald-700  transition duration-300 ease-in-out;"
                     to="/profile"
                   >
                     {" "}
                     TILL DINA ANNONSER{" "}
                   </NavLink>
                   <NavLink
-                    className="mt-7 p-2 px-5 rounded-md cursor-pointer border-2 border-emerald-500 w-full bg-green-800 text-white hover:bg-green-500/60 hover:border-emerald-700  transition duration-300 ease-in-out;"
+                    className="text-center mt-7 p-2 px-5 rounded-md cursor-pointer border-2 border-emerald-500 w-full bg-green-800 text-white hover:bg-green-500/60 hover:border-emerald-700  transition duration-300 ease-in-out;"
                     to="/"
                   >
                     {" "}

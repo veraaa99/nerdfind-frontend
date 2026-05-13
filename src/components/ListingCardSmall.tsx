@@ -22,19 +22,19 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
   }, []);
 
   return (
-    <div className="group relative w-80 rounded-md overflow-hidden border border-emerald-500 bg-emerald-950 text-emerald-400 shadow-xl/30 hover:text-emerald-200 transition transform hover:-translate-y-1 duration-500">
+    <div className="group relative w-80 rounded-md overflow-hidden border border-emerald-500 bg-emerald-950 text-emerald-400 shadow-xl/30 hover:text-emerald-200 transition transform hover:-translate-y-1 duration-500 lg:w-78 self-start">
       <div className="absolute inset-0 bg-white opacity-5 group-hover:opacity-10 transition pointer-events-none duration-500" />
 
       <Link to={`/listings/${listing._id}`}>
         <div
-          className="relative z-10 p-5 flex flex-col justify-end h-50 w-80 rounded-t-md rounded-r-md lg:w-90 lg:h-70 bg-cover bg-center bg-black/60 bg-blend-overlay group-hover:bg-black/20 transition duration-500"
+          className="relative z-10 p-5 flex flex-col justify-end h-50 w-80 rounded-t-md rounded-r-md sm:w-78 lg:h-78  bg-cover bg-center bg-black/60 bg-blend-overlay group-hover:bg-black/20 transition duration-500"
           style={{ backgroundImage: `url(${listing.images[0].url})` }}
         >
-          <h3 className="font-bold text-shadow-lg/50 group-hover:text-shadow-2xl">
+          <h3 className="font-bold text-wrap text-shadow-lg/50 group-hover:text-shadow-2xl">
             {listing.title}
           </h3>
         </div>
-        <div className="p-5 flex flex-col gap-1 font-light">
+        <div className="p-5 flex flex-col gap-1 font-light ">
           <h4>{listing.type}</h4>
           <p>{listing.location.address.split(",").slice(0, 1).join(" - ")}</p>
           <p>{listing.location.city}</p>

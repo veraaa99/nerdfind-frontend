@@ -15,7 +15,8 @@ const ListingDetails = () => {
 
   return (
     <div className="mx-auto md:max-w-5xl">
-      {listing && <Listing listing={listing} />}
+      {!listings && <p>Laddar annons...</p>}
+      {listing ? <Listing listing={listing} /> : <p>Annonsen hittades inte</p>}
     </div>
   );
 };
