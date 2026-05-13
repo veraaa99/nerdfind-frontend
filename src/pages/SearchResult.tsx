@@ -49,16 +49,18 @@ const SearchResult = () => {
 
       {loading && <p>Söker efter annonser...</p>}
       <div className="container flex flex-col gap-10 items-center sm:items-start pb-15 sm:flex-row sm:mx-auto sm:flex-wrap sm:px-10">
-        {searchResult !== null && searchResult.length > 0 && !loading ? (
-          searchResult.map((listing) => <ListingCardSmall listing={listing} />)
-        ) : (
-          <>
-            <p>
-              Inga annonser matchade din sökning. Testa några andra filter eller
-              kom tillbaka senare!
-            </p>
-          </>
-        )}
+        {searchResult !== null && searchResult.length > 0 && !loading
+          ? searchResult.map((listing) => (
+              <ListingCardSmall listing={listing} />
+            ))
+          : !loading && (
+              <>
+                <p>
+                  Inga annonser matchade din sökning. Testa några andra filter
+                  eller kom tillbaka senare!
+                </p>
+              </>
+            )}
       </div>
     </div>
   );
