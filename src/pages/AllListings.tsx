@@ -17,9 +17,9 @@ const AllListings = () => {
           <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {listings &&
               listings.map(
-                (listing) =>
+                (listing, index) =>
                   listing.type == "Event" && (
-                    <ListingCardSmall listing={listing} />
+                    <ListingCardSmall listing={listing} key={index} />
                   ),
               )}
             {listings?.filter((listing) => listing.type == "Event").length ==
@@ -36,9 +36,9 @@ const AllListings = () => {
           <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {listings &&
               listings.map(
-                (listing) =>
+                (listing, index) =>
                   listing.type == "Loppis" && (
-                    <ListingCardSmall listing={listing} />
+                    <ListingCardSmall listing={listing} key={index} />
                   ),
               )}
             {listings?.filter((listing) => listing.type == "Loppis").length ==
@@ -55,9 +55,9 @@ const AllListings = () => {
           <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {listings &&
               listings.map(
-                (listing) =>
+                (listing, index) =>
                   listing.type == "Mässa" && (
-                    <ListingCardSmall listing={listing} />
+                    <ListingCardSmall listing={listing} key={index} />
                   ),
               )}
             {listings?.filter((listing) => listing.type == "Mässa").length ==
@@ -73,9 +73,9 @@ const AllListings = () => {
           <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {listings &&
               listings.map(
-                (listing) =>
+                (listing, index) =>
                   listing.type == "Butik" && (
-                    <ListingCardSmall listing={listing} />
+                    <ListingCardSmall listing={listing} key={index} />
                   ),
               )}
             {listings?.filter((listing) => listing.type == "Butik").length ==

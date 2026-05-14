@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 
 const Home = () => {
-  // TODO: Lögg till unik key prop i alla .map-funktioner
   const { listings } = useListing();
   const location = useLocation();
 
@@ -68,8 +67,8 @@ const Home = () => {
           {loading && <p className="text-shadow-lg/50">Laddar event...</p>}
           <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {eventListings &&
-              eventListings.map((listing) => (
-                <ListingCardSmall listing={listing} />
+              eventListings.map((listing, index) => (
+                <ListingCardSmall listing={listing} key={index} />
               ))}
             {eventListings == undefined ||
               (eventListings.length == 0 && (
@@ -86,8 +85,8 @@ const Home = () => {
           <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {" "}
             {marketListings &&
-              marketListings.map((listing) => (
-                <ListingCardSmall listing={listing} />
+              marketListings.map((listing, index) => (
+                <ListingCardSmall listing={listing} key={index} />
               ))}
             {marketListings == undefined ||
               (marketListings.length == 0 && (
@@ -103,8 +102,8 @@ const Home = () => {
 
           <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {conventionListings &&
-              conventionListings.map((listing) => (
-                <ListingCardSmall listing={listing} />
+              conventionListings.map((listing, index) => (
+                <ListingCardSmall listing={listing} key={index} />
               ))}
             {conventionListings == undefined ||
               (conventionListings.length == 0 && (
@@ -120,8 +119,8 @@ const Home = () => {
 
           <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {storeListings &&
-              storeListings.map((listing) => (
-                <ListingCardSmall listing={listing} />
+              storeListings.map((listing, index) => (
+                <ListingCardSmall listing={listing} key={index} />
               ))}
             {storeListings == undefined ||
               (storeListings.length == 0 && (

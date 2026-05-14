@@ -83,8 +83,6 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
       if (res.status !== 201) return;
 
-      console.log(res.data.isHost);
-
       setToken(res.data.userToken);
       setUser(res.data._id);
       sessionStorage.setItem("jwt", res.data.userToken);
@@ -103,8 +101,6 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
       const res = await axios.post("api/users/login", userInformation);
 
       if (res.status !== 200) return;
-
-      console.log(res.data);
 
       setToken(res.data.userToken);
       setUser(res.data._id);

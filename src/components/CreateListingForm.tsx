@@ -10,6 +10,7 @@ import { Input } from "./ui/input";
 import { Calendar } from "./ui/calendar";
 
 import ImageKit from "imagekit-javascript";
+import imageCompression from "browser-image-compression";
 import {
   categories,
   createListingSchema,
@@ -129,9 +130,21 @@ const CreateListingForm = () => {
       throw new Error("Ogiltig filtyp");
     }
 
+    // CLEAN + COMPRESS IMAGE
+    const compressedFile = await imageCompression(file, {
+      maxSizeMB: 2,
+      maxWidthOrHeight: 2400,
+      useWebWorker: true,
+      fileType: "image/jpeg",
+      initialQuality: 0.85,
+    });
+
+    // SAFE FILE NAME
+    const safeName = file.name.replace(/\s+/g, "-").replace(/[^\w.-]/g, "");
+
     const result = await imagekit.upload({
-      file,
-      fileName: file.name,
+      file: compressedFile,
+      fileName: `${Date.now()}-${safeName}.jpg`,
       ...auth,
     });
 
@@ -456,7 +469,7 @@ const CreateListingForm = () => {
                   <input
                     type="file"
                     multiple
-                    accept=".jpg,.jpeg,.png,.webp"
+                    accept="image/*"
                     onChange={(e) => {
                       const files = Array.from(e.target.files || []);
 

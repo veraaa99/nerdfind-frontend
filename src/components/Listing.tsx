@@ -131,14 +131,20 @@ const Listing = ({ listing }: ListingProps) => {
                   </div>
 
                   <div className="p-3 border border-green-300 rounded-lg">
-                    {listing.openingHours.map((day) =>
+                    {listing.openingHours.map((day, index) =>
                       day.times.start == "STÄNGT" ? (
-                        <div className="flex flex-row justify-between">
+                        <div
+                          className="flex flex-row justify-between"
+                          key={index}
+                        >
                           <p>{day.day}:</p>
                           <p>{day.times.start}</p>
                         </div>
                       ) : (
-                        <div className="flex flex-row justify-between">
+                        <div
+                          className="flex flex-row justify-between"
+                          key={index}
+                        >
                           <p>{day.day}:</p>
                           <p>
                             {day.times.start} - {day.times.end}
@@ -154,14 +160,20 @@ const Listing = ({ listing }: ListingProps) => {
                 <h3 className="pt-5 pb-2">TIDER</h3>
 
                 <div className="p-3 border border-green-300 rounded-lg">
-                  {listing.openingHours.map((day) =>
+                  {listing.openingHours.map((day, index) =>
                     day.times.start == "STÄNGT" ? (
-                      <div className="flex flex-row justify-between">
+                      <div
+                        className="flex flex-row justify-between"
+                        key={index}
+                      >
                         <p>{day.day}:</p>
                         <p>{day.times.start}</p>
                       </div>
                     ) : (
-                      <div className="flex flex-row justify-between">
+                      <div
+                        className="flex flex-row justify-between"
+                        key={index}
+                      >
                         <p>{day.day}:</p>
                         <p>
                           {day.times.start} - {day.times.end}
