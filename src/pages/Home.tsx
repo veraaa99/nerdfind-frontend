@@ -66,7 +66,7 @@ const Home = () => {
         <div className="mt-10">
           <h3 className="text-center pb-3 sm:pb-5">EVENT</h3>
           {loading && <p className="text-shadow-lg/50">Laddar event...</p>}
-          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:mx-auto sm:flex-wrap sm:justify-center">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {eventListings &&
               eventListings.map((listing) => (
                 <ListingCardSmall listing={listing} />
@@ -83,7 +83,7 @@ const Home = () => {
           <h3 className="text-center pb-3 sm:pb-5">LOPPISAR</h3>
           {loading && <p className="text-shadow-lg/50">Laddar loppisar...</p>}
 
-          <div className="container flex flex-col items-center gap-10 min-h-52 pb-10 sm:flex-row sm:flex-wrap sm:justify-center">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {" "}
             {marketListings &&
               marketListings.map((listing) => (
@@ -101,7 +101,7 @@ const Home = () => {
           <h3 className="text-center pb-3 sm:pb-5">MÄSSOR</h3>
           {loading && <p className="text-shadow-lg/50">Laddar mässor...</p>}
 
-          <div className=" flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {conventionListings &&
               conventionListings.map((listing) => (
                 <ListingCardSmall listing={listing} />

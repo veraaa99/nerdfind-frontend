@@ -14,7 +14,7 @@ const AllListings = () => {
         <hr className="divide-solid border-green-300 mt-8 md:mb-5" />
         <div>
           <h3 className="text-center pb-3 sm:pb-5">EVENT</h3>
-          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {listings &&
               listings.map(
                 (listing) =>
@@ -33,7 +33,7 @@ const AllListings = () => {
         <div>
           <h3 className="text-center pb-3 sm:pb-5">LOPPISAR</h3>
 
-          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {listings &&
               listings.map(
                 (listing) =>
@@ -52,7 +52,7 @@ const AllListings = () => {
         <div>
           <h3 className="text-center pb-3 sm:pb-5">MÄSSOR</h3>
 
-          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {listings &&
               listings.map(
                 (listing) =>
@@ -70,7 +70,7 @@ const AllListings = () => {
         </div>
         <div>
           <h3 className="text-center pb-3 sm:pb-5">BUTIKER</h3>
-          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap">
+          <div className="container flex flex-col gap-10 items-center min-h-52 pb-10 sm:pb-15 sm:flex-row sm:justify-center sm:mx-auto sm:flex-wrap sm:items-start">
             {listings &&
               listings.map(
                 (listing) =>

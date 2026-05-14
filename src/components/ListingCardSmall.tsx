@@ -22,7 +22,7 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
   }, []);
 
   return (
-    <div className="group relative w-80 rounded-md overflow-hidden border border-emerald-500 bg-emerald-950 text-emerald-400 shadow-xl/30 hover:text-emerald-200 transition transform hover:-translate-y-1 duration-500 lg:w-78 self-start">
+    <div className="group relative w-80 rounded-md overflow-hidden border border-emerald-500 bg-emerald-950 text-emerald-400 shadow-xl/30 hover:text-emerald-200 transition transform hover:-translate-y-1 duration-500 lg:w-78 sm:self-start">
       <div className="absolute inset-0 bg-white opacity-5 group-hover:opacity-10 transition pointer-events-none duration-500" />
 
       <Link to={`/listings/${listing._id}`}>
@@ -36,7 +36,10 @@ const ListingCardSmall = ({ listing }: ListingProps) => {
         </div>
         <div className="p-5 flex flex-col gap-1 font-light ">
           <h4>{listing.type}</h4>
-          <p>{listing.location.address.split(",").slice(0, 1).join(" - ")}</p>
+          <p>
+            {listing.location.address.split(",").slice(0, 1).join(" - ")},{" "}
+            {listing.location.address.split(",").slice(1, 2).join(" - ")}
+          </p>
           <p>{listing.location.city}</p>
           <div className="flex flex-wrap items-center gap-2">
             {listing.category.predefinedCategory &&
